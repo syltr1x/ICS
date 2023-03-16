@@ -1,0 +1,34 @@
+[
+    {
+        "id":"1",
+        "name":"Jorge",
+        "lastname":"Martinez",
+        "lcplate":[
+            "123AAA"
+        ]
+    },
+    {
+        "id":"2",
+        "name":"Martin",
+        "lastname":"Gomez",
+        "lcplate":[
+            "ABA111", "LOL123", "ABC123"
+        ]
+    },
+    {
+        "id":"4",
+        "name":"Marcos",
+        "lastname":"Roman",
+        "lcplate":[
+            "908ALA", "901KOK"
+        ]
+    },
+    {
+        "id":"3",
+        "name":"Carlos",
+        "lastname":"Roman",
+        "lcplate":[
+            "9090AB"
+        ]
+    }
+]

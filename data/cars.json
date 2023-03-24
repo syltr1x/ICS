@@ -1,0 +1,34 @@
+[
+    {
+        "lcplate":"ABC123",
+        "color":"blanco",
+        "fuel":"combustible",
+        "make":"chevrolet",
+        "model":"astra",
+        "year":"9811"
+    },
+    {
+        "lcplate":"ABC995",
+        "color":"blanco",
+        "fuel":"combustible",
+        "make":"chevrolet",
+        "model":"astra",
+        "year":"9811"
+    },
+    {
+        "lcplate":"ZYX987",
+        "color":"blanco",
+        "fuel":"combustible",
+        "make":"chevrolet",
+        "model":"astra",
+        "year":"9811"
+    },
+    {
+        "lcplate":"aaa111",
+        "color":"tricolor",
+        "fuel":"lleno",
+        "make":"hecho",
+        "model":"corsa",
+        "year":"90's"
+    }
+]

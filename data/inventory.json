@@ -1,0 +1,17 @@
+[
+    {
+        "item":"inyector",
+        "price":"200",
+        "stock":"12"
+    },
+    {
+        "item":"bomba",
+        "price":"400",
+        "stock":"3"
+    },
+    {
+        "item":"piston",
+        "price":"140",
+        "stock":"18"
+    }
+]

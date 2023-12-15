@@ -74,3 +74,8 @@ field : campo a modificar
 newValue : nuevo valor del campo a modificar
 filename : archivo del cual modificar los datos
 ```
+
+> ## **Pasos para actualizar**
+* Una vez realizados los cambios actualizar la version key del main
+* Crear un zip que contenga ICS>src
+* Actualizar la version key del repositorio

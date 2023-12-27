@@ -77,5 +77,5 @@ filename : archivo del cual modificar los datos
 
 > ## **Pasos para actualizar**
 * Una vez realizados los cambios actualizar la version key del main
-* Crear un zip que contenga ICS>src
+* Compilar el programa
 * Actualizar la version key del repositorio

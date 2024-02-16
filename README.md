@@ -1,10 +1,13 @@
 # GUIA DE USO - Logica
 
 > ## **Guía de instalacion**
+! Asegurate de tener python instalado (preferentemente 3.11.6)
+[Instalar Python](https://www.python.org/ftp/python/3.11.6/python-3.11.6-amd64.exe)
 Powershell:
 ```
 curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/ICS.zip -o ICS.zip
 Expand-Archive -Path "ICS.zip" -DestinationPath "ICS"
+pip install -r ICS/requirements.txt
 ```
 > ## **Escritura de datos**
 Base = write_¿?(dato, write)

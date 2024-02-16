@@ -85,5 +85,5 @@ filename : archivo del cual modificar los datos
 
 > ## **Pasos para actualizar**
 * Una vez realizados los cambios actualizar la version key del main
-* Compilar el programa
+* Comprimir el programa y subirlo al main
 * Actualizar la version key del repositorio

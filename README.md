@@ -1,6 +1,9 @@
 # GUIA DE USO - Logica
 
-
+> ## **Guía de instalacion**
+Powershell:
+```curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/ICS.zip -o ICS.zip
+Expand-Archive -Path "ICS.zip" -DestinationPath "ICS"```
 > ## **Escritura de datos**
 Base = write_¿?(dato, write)
 

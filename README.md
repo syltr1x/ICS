@@ -7,7 +7,7 @@ Powershell:
 ```
 curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/ICS.zip -o ICS.zip
 Expand-Archive -Path "ICS.zip" -DestinationPath "ICS"
-pip install -r ICS/requirements.txt
+python -m pip install -r ICS/requirements.txt
 ```
 > ## **Escritura de datos**
 Base = write_¿?(dato, write)

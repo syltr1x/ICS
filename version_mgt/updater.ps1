@@ -1,4 +1,4 @@
-$version_data=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/vkey
+$version_data=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/vkey
 $partes = $version_data -split "_"
 
 $secuencia = $partes[1]

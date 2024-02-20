@@ -1,5 +1,3 @@
-# GUIA DE USO - Logica
-
 > ## **Guía de instalacion**
 ! Asegurate de tener [python instalado](https://www.python.org/ftp/python/3.11.6/python-3.11.6-amd64.exe) (preferentemente 3.11.6)
 
@@ -14,6 +12,7 @@ Linux and MacOS:
 ```
 curl -fsSL https://raw.githubusercontent.com/syltr1x/ICS/main/installer.sh | sh
 ```
+# GUIA DE USO - Logica
 > ## **Escritura de datos**
 Base = write_¿?(dato, write)
 

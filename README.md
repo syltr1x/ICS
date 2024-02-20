@@ -87,14 +87,14 @@ newValue : nuevo valor del campo a modificar
 filename : archivo del cual modificar los datos
 ```
 
-> ## **Pasos para actualizar**
-* Tener en cuenta la estructura que indica las actualizaciones en la key:
-**Todos los valores se indican con 0(False) y 1(True)**
-<key>_abcde
-a=main (indica si se debe actualizar el archivo main.pyw)
-b=logic (indica si se debe actualizar el archivo logic.py)
-c=frames (indica se se tiene que actualizar la carpeta frames)
-d=img (indica si se tiene que actualizar la carpeta img)
-e=reqs (indica si se tiene que actualizar el archivo requirements.txt)
-* Una vez realizados los cambios actualizar la version key del main
+> ## **Pasos para actualizar**<br>
+* Tener en cuenta la estructura que indica las actualizaciones en la key:<br>
+**Todos los valores se indican con 0(False) y 1(True)**<br>
+key_abcde
+a=main (indica si se debe actualizar el archivo main.pyw)<br>
+b=logic (indica si se debe actualizar el archivo logic.py)<br>
+c=frames (indica se se tiene que actualizar la carpeta frames)<br>
+d=img (indica si se tiene que actualizar la carpeta img)<br>
+e=reqs (indica si se tiene que actualizar el archivo requirements.txt)<br>
+* Una vez realizados los cambios actualizar la version key del main<br>
 * Actualizar la version key del repositorio

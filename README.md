@@ -12,9 +12,9 @@ curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/installer.ps1 -o ins
 .\installer.ps1
 ```
 Linux and MacOS:
-´´´
+```
 curl -fsSL https://raw.githubusercontent.com/syltr1x/ICS/main/installer.sh | sh
-´´´
+```
 > ## **Escritura de datos**
 Base = write_¿?(dato, write)
 

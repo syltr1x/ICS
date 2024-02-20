@@ -1,6 +1,4 @@
-# $version_data=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/vkey
-$version_data="0xMS4_01001"
-
+$version_data=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/vkey
 $partes = $version_data -split "_"
 
 $secuencia = $partes[1]
@@ -26,12 +24,14 @@ if ($valores[0]) {
     rm -r ICS/frames
     mkdir ICS/frames
     $frames_list=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/frames_list
+    $frames_list=$frames_list -split "_"
     foreach($frame in $frames_list.ToCharArray()) {
         curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/frames/$frame -o ICS/frames/$frame
     }
-} if ($valres[3]) {
+} if ($valores[3]) {
     rm -r ICS/img
     $img_list=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/img_list
+    $img_list=$img_list -split "_"
     foreach($img in $img_list.ToCharArray()) {
         curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/img/$img -o ICS/img/$img
     }

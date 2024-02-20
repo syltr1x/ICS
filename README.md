@@ -3,12 +3,19 @@
 > ## **Guía de instalacion**
 ! Asegurate de tener [python instalado](https://www.python.org/ftp/python/3.11.6/python-3.11.6-amd64.exe) (preferentemente 3.11.6)
 
+Windows (ejecutable):
+```
+[Instalador](https://raw.githubusercontent.com/syltr1x/ICS/main/installer.exe)
+```
 Powershell:
 ```
-curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/installer.exe -o installer.exe
-.\installer.exe
-python -m pip install -r ICS/requirements.txt
+curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/installer.ps1 -o installer.ps1
+.\installer.ps1
 ```
+Linux and MacOS:
+´´´
+curl -fsSL https://raw.githubusercontent.com/syltr1x/ICS/main/installer.sh | sh
+´´´
 > ## **Escritura de datos**
 Base = write_¿?(dato, write)
 

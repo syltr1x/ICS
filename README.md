@@ -5,6 +5,7 @@
 
 Windows (ejecutable):
 [Instalador](https://raw.githubusercontent.com/syltr1x/ICS/main/installer.exe)
+
 Powershell:
 ```
 curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/installer.ps1 -o installer.ps1

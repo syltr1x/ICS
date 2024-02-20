@@ -8,8 +8,7 @@ Windows (ejecutable):
 
 Powershell:
 ```
-curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/installer.ps1 -o installer.ps1
-.\installer.ps1
+iwr -useb https://raw.githubusercontent.com/syltr1x/ICS/main/installer.ps1 | iex
 ```
 Linux and MacOS:
 ```

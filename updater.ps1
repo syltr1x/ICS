@@ -25,14 +25,14 @@ if ($valores[0]) {
     mkdir ICS/frames
     $frames_list=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/frames_list
     $frames_list=$frames_list -split "_"
-    foreach($frame in $frames_list.ToCharArray()) {
+    foreach($frame in $frames_list) {
         curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/frames/$frame -o ICS/frames/$frame
     }
 } if ($valores[3]) {
     rm -r ICS/img
     $img_list=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/img_list
     $img_list=$img_list -split "_"
-    foreach($img in $img_list.ToCharArray()) {
+    foreach($img in $img_list) {
         curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/img/$img -o ICS/img/$img
     }
 } if ($valores[4]) {

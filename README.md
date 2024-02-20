@@ -6,11 +6,11 @@ Windows (ejecutable):
 
 Powershell:
 ```
-iwr -useb https://raw.githubusercontent.com/syltr1x/ICS/main/installer.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/syltr1x/ICS/main/version/mgt/installer.ps1 | iex
 ```
 Linux and MacOS:
 ```
-curl -fsSL https://raw.githubusercontent.com/syltr1x/ICS/main/installer.sh | sh
+curl -fsSL https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/installer.sh | sh
 ```
 # GUIA DE USO - Logica
 > ## **Escritura de datos**

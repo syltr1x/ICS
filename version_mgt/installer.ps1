@@ -18,3 +18,15 @@ foreach($img in $img_list) {
 
 curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/requirements.txt -o ICS/requirements.txt
 py -m pip install -r ICS/requirements.txt
+
+$pydirs=python -c "import sys; print(sys.path)"
+$pydirs = $pydirs -replace "[\[\]'']", ""
+$pydirs = $pydirs -split ", "
+
+foreach($pdir in $pydirs) {
+    if ($pdir -match "site-packages") {
+        $pdir = $pdir
+        break
+    }
+}
+curl.exe https://raw.githubusercontent.com/syltr1x/mythings/main/ctk_mod/red.json -o C:\Users\r4y\AppData\Local\Programs\Python\Python311\Lib\site-packages\customtkinter\assets\themes\red.json

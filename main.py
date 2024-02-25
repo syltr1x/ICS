@@ -255,19 +255,6 @@ class App(customtkinter.CTk):
 
 if __name__ == "__main__":
     try:
-        def is_admin():
-            try:
-                return ctypes.windll.shell32.IsUserAnAdmin()
-            except:
-                return False
-
-        def run_as_admin():
-            if is_admin():
-                print("El programa ya se está ejecutando como administrador.")
-            else:
-                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-                sys.exit()  # Salir del script si no se proporcionaron permisos de administrador
-        # run_as_admin()
         if config["path"] == "":
             logic.mod_config([{"field":"path", "value":os.path.dirname(os.path.realpath(__name__))}])
         update("", 0)

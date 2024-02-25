@@ -29,4 +29,6 @@ foreach($pdir in $pydirs) {
         break
     }
 }
-curl.exe https://raw.githubusercontent.com/syltr1x/mythings/main/ctk_mod/red.json -o C:\Users\r4y\AppData\Local\Programs\Python\Python311\Lib\site-packages\customtkinter\assets\themes\red.json
+	
+curl.exe https://raw.githubusercontent.com/syltr1x/mythings/main/ctk_mod/red.json -o $pdir\customtkinter\assets\themes\red.json
+curl.exe https://raw.githubusercontent.com/syltr1x/mythings/main/ctk_mod/theme_manager.py -o $pdir\customtkinter\windows\widgets\theme\theme_manager.py

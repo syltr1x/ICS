@@ -114,7 +114,9 @@ class App(customtkinter.CTkFrame):
                 dark_image=Image.open(os.path.join(image_path, "light/back.png")), size=(20, 20))
         
         # create scrollable radiobutton frame
-        with open("data/balance.json", "r", encoding='utf8') as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace(',{', ',{{').split(',{')
+        with open("data/balance.json", "r", encoding='utf8') as dF: data = dF.read()
+        dF.close()
+        data = data[:-1][1:].replace(',{', ',{{').split(',{')if len(data) > 5 else []
         ilist = []
         bExist = False
         title = "No hay movimientos todavia"

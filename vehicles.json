@@ -44,24 +44,8 @@
       "Phaeton",
       "Fox"
 ], "ford":[
-      "F-150",
-      "Mustang",
-      "Escape",
-      "Explorer",
-      "Focus",
-      "Fusion",
-      "Edge",
-      "Ranger",
-      "Bronco",
-      "Expedition",
-      "EcoSport",
-      "Transit",
-      "Taurus",
-      "Fiesta",
       "Excursion",
       "Maverick",
-      "Flex",
-      "Crown Victoria",
       "Thunderbird",
       "GT",
       "Focus",
@@ -362,4 +346,5 @@
       "912",
       "550 Spyder",
       "Mission E"
-]}
+]
+}

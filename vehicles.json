@@ -1,5 +1,5 @@
 {
-    "toyota" = [
+    "toyota":[
       "Corolla",
       "Camry",
       "RAV4",
@@ -21,7 +21,7 @@
       "MR2",
       "Echo",
       "Hilux"
-], "volkswagen" = [
+], "volkswagen":[
       "Golf",
       "Jetta",
       "Passat",
@@ -43,7 +43,7 @@
       "Amarok",
       "Phaeton",
       "Fox"
-], "ford" = [
+], "ford":[
       "F-150",
       "Mustang",
       "Escape",
@@ -84,7 +84,7 @@
       "Escort",
       "Crown Victoria",
       "Falcon"
-], "honda" = [
+], "honda":[
       "Civic",
       "Accord",
       "CR-V",
@@ -105,7 +105,7 @@
       "Prelude",
       "CRX",
       "NSX"
-], "chevrolet" = [
+], "chevrolet":[
       "Silverado",
       "Equinox",
       "Tahoe",
@@ -127,7 +127,7 @@
       "Avalanche",
       "SS",
       "Astra"
-], "bmw"= [
+], "bmw":[
       "Serie 3",
       "Serie 5",
       "X3",
@@ -148,7 +148,7 @@
       "4 Series",
       "6 Series",
       "X4"
-], "tesla" = [
+], "tesla":[
       "Model S",
       "Model 3",
       "Model X",
@@ -169,7 +169,7 @@
       "Model E",
       "Model H",
       "Model U"
-], "audi" = [
+], "audi":[
       "A3",
       "A4",
       "A6",
@@ -190,7 +190,7 @@
       "RS7",
       "RS Q8",
       "e-tron"
-], "mercedes benz" = [
+], "mercedes benz":[
       "Clase C",
       "Clase E",
       "Clase S",
@@ -211,7 +211,7 @@
       "GLS",
       "SL",
       "SLC"
-], "nissan" = [
+], "nissan":[
       "Altima",
       "Sentra",
       "Versa",
@@ -232,7 +232,7 @@
       "Quest",
       "NV200",
       "Micra"
-], "fiat" = [
+], "fiat":[
       "500",
       "Panda",
       "Tipo",
@@ -278,7 +278,7 @@
       "500L Trekking",
       "500X Trekking Plus",
       "Linea 2"
-], "hyundai" = [
+], "hyundai":[
       "Elantra",
       "Sonata",
       "Tucson",
@@ -299,7 +299,7 @@
       "Xcent",
       "i10",
       "i20"
-], "kia" = [
+], "kia":[
       "Rio",
       "Forte",
       "Optima",
@@ -320,7 +320,7 @@
       "Carens",
       "Quoris",
       "Stonic"
-], "subaru" = [
+], "subaru":[
       "Impreza",
       "Legacy",
       "Outback",
@@ -341,7 +341,7 @@
       "Alcyone",
       "Rex",
       "Stella"
-], "porsche" = [
+], "porsche":[
       "911",
       "Cayenne",
       "Panamera",
@@ -362,5 +362,4 @@
       "912",
       "550 Spyder",
       "Mission E"
-]
-}
+]}

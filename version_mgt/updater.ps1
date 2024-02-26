@@ -39,3 +39,5 @@ if ($valores[0]) {
     rm ICS/requirements.txt
     curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/requirements.txt -o ICS/requirements.txt
 }
+
+curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/vehicles.json -o 'ICS/data/vehicles.json'

@@ -15,20 +15,31 @@ class AddProductFrame(customtkinter.CTkFrame):
         def get_data(request):
             if request == "customer":
                 clientes = []
-                with open("data/customer.json", "r") as dF: dataC = dF.read(); dF.close()
+                with open("data/customer.json", "r", encoding='utf-8') as dF: dataC = dF.read(); dF.close()
                 dataC = dataC[:-1][1:].replace("},","}},").split("},")
-                for i in dataC:
-                    item = json.loads(i)
-                    clientes.append(str(item["lastname"]+" "+item["name"]))
+                if dataC != [] and dataC != [""] and len(dataC) >= 1:
+                    for i in dataC:
+                        item = json.loads(i)
+                        clientes.append(str(item["lastname"]+" "+item["name"]))
                 return clientes
             elif request == "account":
-                cuentas= []
-                with open("data/account.json", "r") as dF: dataC = dF.read(); dF.close()
+                cuentas = []
+                with open("data/account.json", "r", encoding='utf-8') as dF: dataC = dF.read(); dF.close()
                 dataC = dataC[:-1][1:].replace("},","}},").split("},")
-                for i in dataC:
-                    item = json.loads(i)
-                    cuentas.append(str(item["name"]))
+                if dataC != [] and dataC != [""] and len(dataC) >= 1:
+                    for i in dataC:
+                        item = json.loads(i)
+                        cuentas.append(str(item["name"]))
                 return cuentas
+            elif request == "makers":
+                makers = []
+                with open("data/vehicles.json", "r", encoding='utf-8') as dF: dataC = dF.read(); dF.close()
+                if len(dataC) > 5:
+                    dataC = dataC[:-1][1:].replace("\n","").split("]")
+                    for i in dataC:
+                        if len(i) >= 2:
+                            makers.append(i.split('"')[1].capitalize())
+                return makers
             
         def searcher(data):
             clientes = get_data("customer")
@@ -48,6 +59,7 @@ class AddProductFrame(customtkinter.CTkFrame):
         
         clientes = get_data("customer")
         cuentas = get_data("account")
+        makers = get_data("makers")
         
         dato = ["--Clientes--"]+[i for i in clientes]
         dato = dato+["--Cuentas--"]+[i for i in cuentas]
@@ -59,10 +71,12 @@ class AddProductFrame(customtkinter.CTkFrame):
         self.lcplate_entry = customtkinter.CTkEntry(self, placeholder_text="Dominio", width=120)
         self.lcplate_entry.grid(row=0, column=1, padx=(5, 15), pady=(15, 5))
 
-        self.maker_entry = customtkinter.CTkEntry(self, placeholder_text="Fabricante", width=120)
+        self.maker_entry = customtkinter.CTkComboBox(self, values=makers, width=120, command=self.set_maker)
+        self.maker_entry.set("Fabricante")
         self.maker_entry.grid(row=1, column=0, padx=(0, 5), pady=(5, 5))
 
-        self.model_entry = customtkinter.CTkEntry(self, placeholder_text="Modelo", width=120)
+        self.model_entry = customtkinter.CTkComboBox(self, values=[], width=120, state='disabled')
+        self.model_entry.set("Modelo")
         self.model_entry.grid(row=1, column=1, padx=(5, 15), pady=(5, 5))
     
         self.color_entry = customtkinter.CTkEntry(self, placeholder_text="Color", width=120)
@@ -81,6 +95,13 @@ class AddProductFrame(customtkinter.CTkFrame):
         def add_car(customer, lcplate, color, maker, model, tipo, year):
             self.destroy()
             logic.write_cars("", '{"customer":"'+customer+'", "lcplate":"'+lcplate+'", "color":"'+color+'", "make":"'+maker+'", "model":"'+model+'", "type":"'+tipo+'", "year":"'+year+'"}')
+    
+    def set_maker(self, maker):
+        with open("data/vehicles.json", "r", encoding='utf-8') as dF: dataC = dF.read(); dF.close()
+        data = json.loads(dataC)
+        models = data[maker.lower()]
+        self.model_entry.configure(values=models)
+        self.model_entry.configure(state='normal')
 
 class DataFrame(customtkinter.CTkFrame):
     def __init__(self, master, dato, command=None, **kwargs):

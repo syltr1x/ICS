@@ -153,37 +153,11 @@ class App(customtkinter.CTkFrame):
 
     # footer-menu functions
     def remove_customer(self):
-        if self.scrollable_radiobutton_frame.get_checked_item() == "Particulares":
-            NpId = []
-            LpId = []
-            Nid = str(logic.get_customer("name", self.account_list_frame.get_checked_item().split(" ")[0], "strict"))
-            Lid = str(logic.get_customer("lastname", self.account_list_frame.get_checked_item().split(" ")[1], "strict"))
-            Nid = Nid[:-1][1:].replace("'", '"').replace('}, {', '}}, {{').split("}, {")
-            Lid = Lid[:-1][1:].replace("'", '"').replace('}, {', '}}, {{').split("}, {")
-
-            if type(Nid) == list: 
-                for item in Nid:  NpId.append(json.loads(item)["id"])
-            if type(Lid) == list:
-                for item in Lid:  LpId.append(json.loads(item)["id"])
-
-            if type(NpId):
-                for i in NpId:
-                    if type(LpId):
-                        for y in LpId:
-                            if i == y: id = i
-                    else:
-                        if i == Lid: id = i
-            else:
-                if Nid == Lid: id = i
-            open("data/temp/customer.json", "w").write(open("data/customer.json", "r").read()) # Temp Save
-            logic.remove_data("customer.json", id, "id")
-            self.refresh("customer.json")
-        elif self.scrollable_radiobutton_frame.get_checked_item() == "Corrientes":
-            name = str(self.account_list_frame.get_checked_item())
-            open("data/temp/account.json", "w").write(open("data/account.json", "r").read()) # Temp Save
-            logic.remove_data("account.json", name, "name")
-            self.refresh("account.json")
-        self.account_frame.destroy()
+        id = json.loads(self.scrollable_radiobutton_frame.get_checked_item().replace("'", '"'))["id"]
+        logic.del_balance(logic.get_date(), id)
+        open("data/temp/balance.json", "w").write(open("data/balance.json", "r").read()) # Temp Save
+        self.customer_balance_frame.destroy()
+        self.refresh()
 
     def add_customer(self):
         self.refresh()

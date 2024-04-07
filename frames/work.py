@@ -104,12 +104,11 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
-        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=lambda:(self.back(self, "work.json")),
+        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
-        # Scrollables Frames Function
-
+    # Scrollables Frames Function
     def refresh(self):
         if self.add_customer_frame != None: self.cancel()
         if self.data_frame != None: self.data_frame.destroy()

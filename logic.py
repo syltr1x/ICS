@@ -1,25 +1,6 @@
 import json, time, os, subprocess as sp, ctypes, sys
 
-def create_config():
-    version_key = str(sp.check_output('curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/vkey', shell=True))[2:]
-    sp.check_call('curl.exe http://localhost/vehicles.json -o data/vehicles.json')
-    file = open('data/config.json', 'w')
-    file.write('{\n    "vkey":"'+version_key+'",\n    "path":"",\n    "mode":"system",\n    "theme":"blue",\n    "mechanics":""\n}')
-    file.close()
-    open('data/account.json', 'w').close()
-    open('data/balance.json', 'w').close()
-    open('data/budget.json', 'w').close()
-    open('data/car.json', 'w').close()
-    open('data/customer.json', 'w').close()
-    open('data/history.json', 'w').close()
-    open('data/inventory.json', 'w').close()
-    open('data/work.json', 'w').close()
-
 def get_config():
-    if not os.path.exists('data'):
-        os.mkdir('data')
-        os.mkdir('data/temp')
-        create_config()
     config = json.loads(open('data/config.json', 'r', encoding='utf-8').read())
     return config
 
@@ -132,26 +113,40 @@ def add_balance(date, client, tech, price, desc):
     mod_data(date, "date", "movements", movements, "balance.json")
     mod_data(date, "date", "balance", nbalance, "balance.json")
 
-def is_admin():
+def del_balance(date, id):
+    dato = open('data/balance.json', 'r', encoding='utf8').read()
+    dato = dato[:-1][1:].replace(",{", ",{{").split(",{")
+    for d in dato:
+        if json.loads(d)["date"] == date:
+            movements = json.loads(d)["movements"]
+            balance = int(json.loads(d)["balance"])
+            break
+    for m in movements:
+        if m["id"] == id:
+            tbalance = int(m["price"])
+            movements.remove(m)
+            break
+    balance = str(balance-tbalance)
+    mod_data(date, "date", "movements", movements, "balance.json")
+    mod_data(date, "date", "balance", balance, "balance.json")
+            
+
+def run_as_admin(command):
     try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
+        if sys.platform.startswith('win'):
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, command, None, 1)
+        return True
+    except Exception as e:
+        print(e)
         return False
-
-def run_as_admin(updater_path):
-    if is_admin():
-        sp.Popen([updater_path, get_config()["path"]])
-
-    else:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-        run_as_admin(updater_path)
 
 def update_app():
     updater_filename = "updater.exe"
     updater_path = os.path.join(os.path.dirname(get_config()["path"]), updater_filename)
-    os.system(f'powershell -c "curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/{updater_filename} -o {updater_path}"')
-    run_as_admin(updater_path)
-    sp.Popen([updater_path, get_config()["path"]])
+    os.system(f'powershell -c "curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/{updater_filename} -o {updater_path}"')
+    command = '"' + sys.executable + ' ' + sys.argv[0] + '"'
+    if run_as_admin(command):
+        sp.Popen([updater_path, get_config()["path"]])
     exit()
     
 def get_customer(filter, value, mode):

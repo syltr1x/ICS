@@ -10,6 +10,8 @@ foreach($frame in $frames_list) {
 }
 
 mkdir ICS/img
+mkdir ICS/img/dark
+mkdir ICS/img/light
 $img_list=curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/img_list
 $img_list=$img_list -split "_"
 foreach($img in $img_list) {

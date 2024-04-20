@@ -1,9 +1,7 @@
 from PIL import Image
 import customtkinter
 import requests as r
-import ctypes
 import logic
-import sys
 import os
 
 # Frames
@@ -72,8 +70,8 @@ class App(customtkinter.CTk):
                 dark_image=Image.open(os.path.join(image_path, "light/account.png")), size=(20, 20))
         self.inventory_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/list.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/list.png")), size=(20, 20))
-        self.contacts_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/phone_book.png")),
-                dark_image=Image.open(os.path.join(image_path, "light/phone_book.png")), size=(20, 20))
+        self.contacts_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/phonebook.png")),
+                dark_image=Image.open(os.path.join(image_path, "light/phonebook.png")), size=(20, 20))
         self.history_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/clock.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/clock.png")), size=(20, 20))
         self.cash_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/cash.png")),

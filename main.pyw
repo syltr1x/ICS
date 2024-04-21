@@ -48,15 +48,15 @@ class App(customtkinter.CTk):
 
         self.title("Punto Diesel | WorkShop Solution")
         self.geometry("1260x550")
-        self.icon_app = os.path.join(os.path.dirname(os.path.realpath(__file__)), "img\\icon.ico")
-        self.after(201, lambda :self.iconbitmap(self.icon_app))
+        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "img")
+        self.icon_app = os.path.join(image_path, "icon.ico")
+        self.iconbitmap(self.icon_app)
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
         # load images with light and dark mode image
-        image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "img")
         self.logo_image = customtkinter.CTkImage(Image.open(os.path.join(image_path, "icon.png")), size=(26, 26))
         self.budget_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/bill.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/bill.png")), size=(20, 20))

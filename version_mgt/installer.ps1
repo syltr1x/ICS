@@ -19,9 +19,17 @@ foreach($img in $img_list) {
 }
 
 curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/requirements.txt -o ICS/requirements.txt
-py -m pip install -r ICS/requirements.txt
 
-$pydirs=python -c "import sys; print(sys.path)"
+if (Get-Command py -ErrorAction SilentlyContinue) {
+    $pycomm = "py"
+} elseif (Get-Command python -ErrorAction SilentlyContinue) {
+    $pycomm = "python"
+} else {
+    Write-Host "Error: No hemos podido encontrar 'python' ni 'py' como comando"
+}
+
+Invoke-Expression "$pycomm -m pip install -r ICS/requirements.txt"
+$pydirs = & $pycomm -c "import sys; print(sys.path)"
 $pydirs = $pydirs -replace "[\[\]'']", ""
 $pydirs = $pydirs -split ", "
 

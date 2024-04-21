@@ -197,11 +197,16 @@ class App(customtkinter.CTkFrame):
         if self.scrollable_radiobutton_frame != None : self.scrollable_radiobutton_frame.destroy()
         if self.mod_item_frame != None: self.mod_item_frame.destroy()
         if self.mod_frame != None: self.mod_frame.destroy()
-        with open("data/inventory.json", "r", encoding='utf8') as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
-        self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=300, command=self.radiobutton_frame_event,
-                item_list=[f'{json.loads(i)["item"]}' for i in data],                                                                       
-                label_text="Lista de Productos", corner_radius=10)
+        with open("data/inventory.json", "r", encoding="utf-8") as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
+        if data != ['']:
+            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
+                    item_list=[f'{json.loads(i)["item"]}' for i in data],                                                                       
+                    label_text="Lista de Productos", corner_radius=10)
+        else:
+            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
+                    item_list=[], label_text="Lista de Productos", corner_radius=10)
         self.scrollable_radiobutton_frame.grid(row=0, column=1, padx=(15, 5), pady=10, sticky="ns")
+        self.scrollable_radiobutton_frame.configure(width=292)
         self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Añadir", image=self.add_icon_image, compound="left", command=self.add_product,
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)

@@ -19,9 +19,10 @@ class AddCustomerFrame(customtkinter.CTkFrame):
                 clientes = []
                 with open("data/customer.json", "r") as dF: dataC = dF.read(); dF.close()
                 dataC = dataC[:-1][1:].replace("},","}},").split("},")
-                for i in dataC:
-                    item = json.loads(i)
-                    clientes.append(str(item["lastname"]+" "+item["name"]))
+                if dataC != [] and dataC != ['']:
+                    for i in dataC:
+                        item = json.loads(i)
+                        clientes.append(str(item["lastname"]+" "+item["name"]))
                 return clientes
             elif request == "technician":
                 mecanicos = []
@@ -34,9 +35,10 @@ class AddCustomerFrame(customtkinter.CTkFrame):
                 patentes = []
                 with open("data/car.json", "r") as dF: dataP = dF.read(); dF.close()
                 dataP = dataP[:-1][1:].replace("},","}},").split("},")
-                for i in dataP:
-                    item = json.loads(i)
-                    patentes.append(item["lcplate"])
+                if dataP != [] and dataP != ['']:
+                    for i in dataP:
+                        item = json.loads(i)
+                        patentes.append(item["lcplate"])
                 return patentes
             
         def auto_date():

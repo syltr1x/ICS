@@ -1,7 +1,8 @@
 import json, time, os, subprocess as sp, ctypes, sys
 
 def create_config():
-    version_key = str(sp.check_output('curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/vkey', shell=True))[2:]
+    version_key = str(sp.check_output('curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/vkey', shell=True))[2:] # Obtener clave de version
+    sp.check_output('curl.exe https://raw.githubusercontent.com/syltr1x/ICS/main/vehicles.json -o data/vehicles.json', shell=True) # Obtener lista de vehiculos
     file = open('data/config.json', 'w')
     file.write('{\n    "vkey":"'+version_key+'",\n    "path":"",\n    "mode":"system",\n    "theme":"red",\n    "mechanics":""\n}')
     file.close()

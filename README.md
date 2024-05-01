@@ -6,7 +6,7 @@ Windows (ejecutable):
 
 Powershell:
 ```
-iwr -useb https://raw.githubusercontent.com/syltr1x/ICS/main/version/mgt/installer.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/syltr1x/ICS/main/version_mgt/installer.ps1 | iex
 ```
 Linux and MacOS:
 ```

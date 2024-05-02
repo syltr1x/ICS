@@ -37,7 +37,7 @@ def update(obj, c):
         wlabel.grid(column=0, row=0, pady=(20, 48), padx=9)
         wbtn1 = customtkinter.CTkButton(warn, text="Reintentar", command=lambda:(update(warn, 1)))
         wbtn1.grid(column=0, row=1, pady=(0, 8))
-        wbtn2 = customtkinter.CTkButton(warn, text="Cerrar", command=lambda:(warn.destroy()))
+        wbtn2 = customtkinter.CTkButton(warn, text="Continuar", command=lambda:(warn.destroy()))
         wbtn2.grid(column=0, row=2)
         warn.mainloop()
         lvi = True
@@ -165,7 +165,10 @@ class App(customtkinter.CTk):
 
     def select_frame_by_name(self, name):
         if name != "account":
-            logic.order_id(name+'.json') 
+            if name == "other":
+                logic.order_id('balance.json')
+            else: 
+                logic.order_id(name+'.json')
         else:
             logic.order_id("account.json")
             logic.order_id("customer.json")

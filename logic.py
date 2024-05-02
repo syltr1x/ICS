@@ -159,6 +159,23 @@ def add_balance(date, client, tech, price, desc):
     mod_data(date, "date", "movements", movements, "balance.json")
     mod_data(date, "date", "balance", nbalance, "balance.json")
 
+def del_balance(date, id):
+    dato = open('data/balance.json', "r", encoding='utf8').read()
+    dato = dato[:-1][1:].replace(",{", ",{{").split(",{")
+    for d in dato:
+        d = json.loads(d)
+        if date == d["date"]:
+            balance = d["balance"]
+            movements = d["movements"]
+            break
+    for m in movements: 
+        if id == m["id"]:
+            price = m["price"]
+            movements.remove(m)
+            break
+    mod_data(date, "date", "movements", movements, "balance.json")
+    mod_data(date, "date", "balance", str(int(balance)-int(price)), "balance.json")
+
 def is_admin():
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()

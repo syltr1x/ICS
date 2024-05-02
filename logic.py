@@ -60,15 +60,42 @@ def get_id(data):
     return str(int(dato["id"])+1)
 
 def order_id(filename):
-    if filename != "account.json" and filename != "customer.json" and filename != "work.json" and filename != "history.json": return 0
+    if filename != "account.json" and filename != "customer.json" and filename != "work.json" and filename != "history.json" and filename != "balance.json": return 0
     file = open(f"data/{filename}", "r", encoding='utf8')
-    dato = file.read()[:-1][1:].replace("},", "}},").split("},") if filename != "balance.json" else dato[:-1][1:].replace(",{", ",{{").split(",{")
+    dato = file.read()
+    dato = dato[:-1][1:].replace("},", "}},").split("},") if filename != "balance.json" else dato[:-1][1:].replace(",{", ",{{").split(",{")
     file.close()
     cntr = "0"
     data = []
     if type(dato) != list and len(dato) < 5: return 0
     if type(dato) == list and dato == [''] or []: return 0
-    open(f'data/{filename}', 'w').write('')
+    open(f'data/{filename}', 'w', encoding='utf8').write('')
+    # Order para Balance
+    if filename == "balance.json":
+        dates = []
+        for d in dato:
+            movements = []
+            d = json.loads(d)
+            cntr = 0
+            for m in d["movements"]:
+                m["id"] = cntr
+                cntr += 1
+                movements.append(m)
+            d["movements"] = movements
+            dates.append(d)
+        file = open(f"data/{filename}", 'w', encoding='utf8')
+        file.write("[")
+        for d in dates:
+            if dates.index(d) != 0: file.write('\n    ,{\n        "date":"'+d["date"]+'",\n        "balance":"'+d["balance"]+'",\n        "movements":[')
+            else: file.write('\n    {\n        "date":"'+d["date"]+'",\n        "balance":"'+d["balance"]+'",\n        "movements":[')
+            for m in d["movements"]:
+                if d["movements"].index(m) != len(d["movements"])-1: file.write('\n            {'+f'"id":"{m["id"]}", "client":"{m["client"]}", "mecanico":"{m["mecanico"]}", "price":"{m["price"]}", "desc":"{m["desc"]}"'+'},')
+                else: file.write('\n            {'+f'"id":"{m["id"]}", "client":"{m["client"]}", "mecanico":"{m["mecanico"]}", "price":"{m["price"]}", "desc":"{m["desc"]}"'+'}')
+            file.write(']' if len(d["movements"])-1 < 0 else '\n        ]')
+            file.write('\n    }')
+        file.write('\n]')
+        return 0
+    # Order para el resto de archivos
     for d in dato:
         d = json.loads(d)
         d["id"] = cntr

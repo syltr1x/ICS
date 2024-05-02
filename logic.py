@@ -322,19 +322,22 @@ def write_customer(dato, write):
     file.close()
     dF = open("data/customer.json", "w", encoding='utf-8')
     dF.write("[")
+
     for dato in data:
         item = json.loads(dato)
         item["contact"] = str(item["contact"]).replace("'", '"').replace("}, {", "}}, {{")[:-1][1:].split("}, {")
         dF.write('\n    {\n        "id":"'+item["id"]+'",\n        "name":"'+item["name"]+'",\n        "lastname":"'+item["lastname"]+'",\n        "birthday":"'+item["birthday"]+'",\n        "contact":[')
-        for x in item["contact"]:
-            i = str(x).replace("'", '"')
-            i = json.loads(i)
-            if 0 != item["contact"].index(x): dF.write('\n            ,{\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
-            else: dF.write('\n            {\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
-        dF.write('\n        ],\n        "cars":[')
+        if item["contact"] != [] and item["contact"] != ['']:
+            for x in item["contact"]:
+                i = str(x).replace("'", '"')
+                i = json.loads(i)
+                if 0 != item["contact"].index(x): dF.write('\n            ,{\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
+                else: dF.write('\n            {\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
+            dF.write('\n        ],\n        "cars":[')
+        else: dF.write('],\n        "cars":[')
         if item["cars"] != []: 
             for y in item["cars"]: dF.write(f'"{y}", ' if item["cars"].index(y) != len(item["cars"])-1 else f'"{y}"]')
-        else: dF.write('""]') 
+        else: dF.write(']') 
         dF.write('\n    },' if data.index(dato) != len(data)-1 else '\n    }')
     dF.write('\n]')
     dF.close()
@@ -355,15 +358,17 @@ def write_account(dato, write):
         item = json.loads(dato)
         item["contact"] = str(item["contact"]).replace("'", '"').replace("}, {", "}}, {{")[:-1][1:].split("}, {")
         dF.write('\n    {\n        "id":"'+item["id"]+'",\n        "name":"'+item["name"]+'",\n        "balance":"'+item["balance"]+'",\n        "contact":[')
-        for x in item["contact"]:
-            i = str(x).replace("'", '"')
-            i = json.loads(i)
-            if 0 != item["contact"].index(x): dF.write('\n            ,{\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
-            else: dF.write('\n            {\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
-        dF.write('\n        ],\n        "cars":[')
+        if item["contact"] != [] and item["contact"] != [""]:
+            for x in item["contact"]:
+                i = str(x).replace("'", '"')
+                i = json.loads(i)
+                if 0 != item["contact"].index(x): dF.write('\n            ,{\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
+                else: dF.write('\n            {\n                "media":"'+i["media"]+'",\n                "value":"'+i["value"]+'"\n            }')
+            dF.write('\n        ],\n        "cars":[')
+        else: dF.write('],\n        "cars":[')
         if item["cars"] != []: 
             for y in item["cars"]: dF.write(f'"{y}", ' if item["cars"].index(y) != len(item["cars"])-1 else f'"{y}"]')
-        else: dF.write('""]')
+        else: dF.write(']')
         dF.write('\n    },' if data.index(dato) != len(data)-1 else '\n    }')
     dF.write('\n]')
     dF.close()

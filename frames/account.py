@@ -113,29 +113,29 @@ class AccountDataFrame(customtkinter.CTkFrame):
         elif filename == "account.json":
             item = json.loads(str(logic.get_account("name", data, "strict"))[:-1][1:].replace("'", '"'))
             self.name_data_label = customtkinter.CTkLabel(self, text=item["name"]).grid(row=0, column=0, padx=10, pady=10)
-            self.balance_label = customtkinter.CTkLabel(self, text="Balance : ", fg_color="gray30", corner_radius=5).grid(row=0, column=1, padx=10, pady=10)
+            self.balance_label = customtkinter.CTkLabel(self, text="Balance : ", fg_color="gray30", corner_radius=5).grid(row=1, column=0, padx=10, pady=10)
             self.balance_data_label = customtkinter.CTkLabel(self, text=item["balance"]+" (A favor del cliente)" if int(item["balance"]) < 0 
-                    else item["balance"]+" (A favor del taller)" if int(item["balance"]) != 0 else item["balance"]).grid(row=2, column=0, padx=10, pady=10)
+                    else item["balance"]+" (A favor del taller)" if int(item["balance"]) != 0 else item["balance"]).grid(row=1, column=1, padx=10, pady=10)
 
         self.media_frame = customtkinter.CTkFrame(self)
-        self.media_frame.grid(row=3, column=0, padx=5, pady=5)
+        self.media_frame.grid(row=2, column=0, padx=5, pady=5, columnspan=2)
         self.media_title = customtkinter.CTkLabel(self.media_frame, text="Contactos del cliente" if filename == "customer.json" else "Contactos de la cuenta", fg_color=('gray60', 'gray30'), text_color=("gray1", "gray90"), corner_radius=5).grid(row=0, column=0, padx=1, pady=5, sticky='new')
         for k in range(0, len(item["contact"])):
-            self.media_label = customtkinter.CTkLabel(self.media_frame, text=[f'{item["contact"][k]["media"]} : {item["contact"][k]["value"]}'])
+            self.media_label = customtkinter.CTkLabel(self.media_frame, text=f'{item["contact"][k]["media"]} : {item["contact"][k]["value"]}')
             self.media_label.grid(row=k+1, column=0, padx=5, pady=2)
         
         self.cars_frame = customtkinter.CTkFrame(self)
         self.cars_label = customtkinter.CTkLabel(self.cars_frame, text="Vehículos", compound="center", fg_color=('gray60', 'gray30'), text_color=("gray1", "gray90"), corner_radius=5).grid(row=0, column=0, padx=5, pady=1, sticky='new')
-        self.cars_frame.grid(row=4, column=0, padx=5, pady=5)
+        self.cars_frame.grid(row=3, column=0, padx=5, pady=5, columnspan=2)
         for x in range(0, len(item["cars"])):
             self.car_label = customtkinter.CTkLabel(self.cars_frame, text=item["cars"][x])
             self.car_label.grid(row=x+1, column=0, padx=5, pady=2)
 
 class AddCustomerFrame(customtkinter.CTkFrame):
-        def __init__(self, master, acType, command=None, **kwargs):
+        def __init__(self, master, acType, comm=None, **kwargs):
             super().__init__(master, **kwargs)
 
-            self.name_entry = customtkinter.CTkEntry(self, placeholder_text="Nombre de la cuenta" if acType == "Corrientes" else "Apellido Nombre", width=160)
+            self.name_entry = customtkinter.CTkEntry(self, placeholder_text="Nombre de la cuenta" if acType == "Corrientes" else "Nombre y Apellido", width=160)
             self.name_entry.grid(row=0, column=0, padx=(0, 5), pady=(15, 5))
             
             self.bday_entry = customtkinter.CTkEntry(self, placeholder_text="Cumpleaños: --/--/----", width=160)
@@ -150,25 +150,30 @@ class AddCustomerFrame(customtkinter.CTkFrame):
                     car.append(b)
                 self.destroy()
 
+                contact = [i for i in contact if i != ""]
+                car = [i for i in car if i != ""]
+
                 if acType == "Corrientes":
                     open("data/temp/account.json", "w", encoding="utf-8").write(open("data/account.json", "r", encoding="utf-8").read()) # Temp Save
                     logic.write_account("", '{"id":"'+logic.get_id("account.json")+'", "name":"'+name+'", "balance":"0", "contact":'+str(contact).replace("'", '"')+', "cars":'+str(cars).replace("'", '"')+'}')
+                    comm('account.json')
                 elif acType == "Particulares":
                     open("data/temp/customer.json", "w", encoding="utf-8").write(open("data/customer.json", "r", encoding="utf-8").read()) # Temp Save
                     name = name.split(" ")
                     logic.write_customer("", '{"id":"'+logic.get_id("customer.json")+'", "name":"'+name[0].capitalize()+
                             '", "lastname":"'+name[1].capitalize()+'", "birthday":"'+birthday+'", "contact":'+str(contact).replace("'", '"')+', "cars":'+str(cars).replace("'", '"')+'}')
+                    comm('customer.json')
                 self.destroy()
 
             self.contact_items_frame = customtkinter.CTkFrame(self, width=200, height=80)
             self.contact_items_frame.grid(row=1, column=0, columnspan=2, padx=(5, 5), pady=(5, 5))
             self.contact_items_title = customtkinter.CTkLabel(self.contact_items_frame, text="Medios de contacto").grid(row=0, column=0, padx=(15,0), sticky="w")
-            self.contact_item_add = customtkinter.CTkButton(self.contact_items_frame, text="Añadir medio", command=lambda:(add_contact_item())).grid(row=0, column=-0, padx=(180,0), sticky='w')
+            self.contact_item_add = customtkinter.CTkButton(self.contact_items_frame, text="Añadir medio", command=lambda:(add_contact_item())).grid(row=0, column=0, padx=(180,0), sticky='w')
 
             self.cars_items_frame = customtkinter.CTkFrame(self, width=200, height=80)
             self.cars_items_frame.grid(row=2, column=0, columnspan=2, padx=(5, 5), pady=(5, 5))
             self.cars_items_title = customtkinter.CTkLabel(self.cars_items_frame, text="Vehículos").grid(row=0, column=0, padx=(15,0), sticky="w")
-            self.cars_item_add = customtkinter.CTkButton(self.cars_items_frame, text="Añadir Vehículo", command=lambda:(add_car_item())).grid(row=0, column=-0, padx=(180,0), sticky='w')
+            self.cars_item_add = customtkinter.CTkButton(self.cars_items_frame, text="Añadir Vehículo", command=lambda:(add_car_item())).grid(row=0, column=0, padx=(180,0), sticky='w')
 
             self.add_customer_button = customtkinter.CTkButton(self, text="Añadir Cuenta" if acType == "Corrientes" else "Añadir Cliente", command=lambda:(add_account(self.name_entry.get()
                     ,self.bday_entry.get() if acType != "Corrientes" else "-")))
@@ -187,9 +192,9 @@ class AddCustomerFrame(customtkinter.CTkFrame):
 class NewContact(customtkinter.CTkFrame):
     def __init__(self, master, command=None, **kwargs):
         super().__init__(master, **kwargs)
-        self.pre_add_work()
+        self.pre_add_contact()
 
-    def pre_add_work(self):
+    def pre_add_contact(self):
         global item_menu
         global item_user
         global confirm_work
@@ -198,10 +203,10 @@ class NewContact(customtkinter.CTkFrame):
         self.item_menu.grid(row=0, column=0)
         self.item_user = customtkinter.CTkEntry(self, placeholder_text="Usuario / N° Tel", width=120)
         self.item_user.grid(row=0, column=1)
-        self.confirm_work = customtkinter.CTkButton(self, text="+", width=28, command=lambda:(self.add_work(self.item_menu.get(), self.item_user.get())))
+        self.confirm_work = customtkinter.CTkButton(self, text="+", width=28, command=lambda:(self.add_contact(self.item_menu.get(), self.item_user.get())))
         self.confirm_work.grid(row=0, column=2)
 
-    def add_work(self, item, value):
+    def add_contact(self, item, value):
         if item != "" and value != "":
             self.item_menu.destroy()
             self.item_user.destroy()
@@ -218,16 +223,16 @@ class NewCar(customtkinter.CTkFrame):
         super().__init__(master, **kwargs)
         self.pre_add_work()
 
-    def pre_add_work(self):
+    def pre_add_car(self):
         global item_menu
         global confirm_work
     
         self.item_menu = customtkinter.CTkEntry(self, placeholder_text="Dominio")
         self.item_menu.grid(row=0, column=0)
-        self.confirm_work = customtkinter.CTkButton(self, text="+", width=28, command=lambda:(self.add_work(self.item_menu.get())))
+        self.confirm_work = customtkinter.CTkButton(self, text="+", width=28, command=lambda:(self.add_car(self.item_menu.get())))
         self.confirm_work.grid(row=0, column=1)
 
-    def add_work(self, item):
+    def add_car(self, item):
         if item != "":
             self.item_menu.destroy()
             self.confirm_work.destroy()
@@ -297,11 +302,12 @@ class ModFrame(customtkinter.CTkFrame):
             if bday != "":
                 cambios.append('{"field":"birthday", "value":"'+bday+'"}')
             if contact != "":
-                contact = [i for i in contact.split('\n') if i != '']
+                contact = [i.strip() for i in contact.split('\n') if i != '']
                 contacts = [{"media":i.split(':')[0], "value":i.split(":")[1]} for i in contact]
                 cambios.append('{"field":"contact", "value":'+str(contacts).replace("'", '"')+'}')
             if cars != "":
-                cambios.append('{"field":"cars", "value":'+str(cars.replace('\n','').split(" | ")).replace("'", '"')+'}')
+                cars = [i.strip() for i in cars.split("|") if i != ""]
+                cambios.append('{"field":"cars", "value":'+str(cars).replace('\n','').replace('\\n','').replace("'", '"')+'}')
 
             for c in cambios:
                 ic = json.loads(c)
@@ -384,13 +390,14 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
 
-        self.add_customer_frame = AddCustomerFrame(master=self, width=500, corner_radius=10, acType=self.scrollable_radiobutton_frame.get_checked_item())
+        self.add_customer_frame = AddCustomerFrame(master=self, width=500, corner_radius=10, acType=self.scrollable_radiobutton_frame.get_checked_item(), comm=self.refresh)
         self.add_customer_frame.grid(row=0, column=2, padx=(5, 15), pady=10, sticky="nsew")
 
     def mod_customer(self):
         def cancel():
             self.mod_customer_frame.destroy()
             self.menu_frame_button_3.configure(text="Modificar")
+            self.menu_frame_button_3.configure(state="disabled")
             self.menu_frame_button_3.configure(image=self.mod_icon_image)
             self.menu_frame_button_3.configure(command=self.mod_customer)
 
@@ -421,11 +428,14 @@ class App(customtkinter.CTkFrame):
         self.mod_customer_frame.grid(row=0, column=2, padx=(5, 15), pady=10, sticky="nsew", rowspan=3)
         # Button Refresh
         self.menu_frame_button_3.configure(text="Cancelar")
+        self.menu_frame_button_3.configure(state="normal")
         self.menu_frame_button_3.configure(image=self.x_icon_image)
         self.menu_frame_button_3.configure(command=cancel)
         
     
     def add_car(self):
+        self.menu_frame_button_1.configure(state='disabled')
+        self.menu_frame_button_3.configure(state='disabled')
         dato = self.account_list_frame.get_checked_item()
         if self.fileT == "customer.json":
             NpId = []
@@ -449,17 +459,21 @@ class App(customtkinter.CTkFrame):
                 if Nid == Lid: id = i
         else: id = logic.get_account("name", dato, "strict")[0]["id"]
         def mod_car_data(dom):
-            data = logic.get_account("id", id, "strict") if self.fileT == "account.json" else logic.get_customer("id", id, "strict")
-            nCar = data[0]["cars"]
-            nCar.append(dom)
-            logic.mod_data(id, "id", "cars", nCar, self.fileT)
+            if dom != '':
+                data = logic.get_account("id", id, "strict") if self.fileT == "account.json" else logic.get_customer("id", id, "strict")
+                nCar = data[0]["cars"]
+                nCar.append(dom)
+                logic.mod_data(id, "id", "cars", nCar, self.fileT)
 
             # Restore Button
+            self.menu_frame_button_1.configure(state='normal')
+            self.menu_frame_button_3.configure(state='normal')
             self.menu_frame_button_5.destroy()
             self.menu_frame_entry_5.destroy()
             self.menu_frame_button_5 = customtkinter.CTkButton(self.menu_frame, text="Añadir Vehículo", image=self.car_icon_image, compound="left", command=self.add_car,
                 text_color=("gray10", "gray90"))
             self.menu_frame_button_5.grid(row=4, column=0, padx=10, pady=10)
+            self.refresh(self.fileT)
         # Input Car Domain 
         self.menu_frame_button_5.destroy()
         self.menu_frame_entry_5 = customtkinter.CTkEntry(self.menu_frame, placeholder_text="Dominio", width=110)
@@ -471,6 +485,9 @@ class App(customtkinter.CTkFrame):
         if self.mod_customer_frame != None: self.mod_customer_frame.destroy()
         if self.account_frame != None: self.account_frame.destroy()
         if self.account_list_frame != None: self.account_list_frame.destroy()
+        self.menu_frame_button_1.configure(state='disabled')
+        self.menu_frame_button_3.configure(state='disabled')
+        self.menu_frame_button_5.configure(state='disabled')
         self.account_list_frame = AccountsListFrame(master=self, width=300, filename=file, command=self.select_account)
         self.account_list_frame.grid(row=0, column=1, padx=(20, 20), pady=10, sticky="ns")
     
@@ -501,7 +518,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame.grid(row=1, column=1, padx=15, pady=5)
 
         self.menu_frame_button_1 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=self.remove_customer,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state="disabled")
         self.menu_frame_button_1.grid(row=2, column=0, padx=10, pady=10)
 
         self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Añadir", image=self.add_icon_image, compound="left", command=self.add_customer,
@@ -509,7 +526,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
 
         self.menu_frame_button_3 = customtkinter.CTkButton(self.menu_frame, text="Modificar", image=self.mod_icon_image, compound="left", command=self.mod_customer,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state="disabled")
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
         self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
@@ -517,7 +534,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
         self.menu_frame_button_5 = customtkinter.CTkButton(self.menu_frame, text="Añadir Vehículo", image=self.car_icon_image, compound="left", command=self.add_car,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state="disabled")
         self.menu_frame_button_5.grid(row=4, column=0, padx=10, pady=10)
 
         if self.scrollable_radiobutton_frame.get_checked_item() == "Corrientes": self.menu_frame_button_6 = customtkinter.CTkButton(self.menu_frame, text="Actualizar", 
@@ -528,6 +545,9 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_6.grid(row=4, column=1, padx=10, pady=10)
 
     def select_account(self, account, file):
+        self.menu_frame_button_1.configure(state='normal')
+        self.menu_frame_button_3.configure(state='normal')
+        self.menu_frame_button_5.configure(state='normal')
         if self.account_frame != None:
             self.account_frame.destroy()
         

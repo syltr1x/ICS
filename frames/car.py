@@ -6,7 +6,7 @@ import time
 import os
 
 class AddProductFrame(customtkinter.CTkFrame):
-    def __init__(self, master, command=None, **kwargs):
+    def __init__(self, master, comm=None, **kwargs):
         super().__init__(master, **kwargs)
 
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../img")
@@ -95,7 +95,7 @@ class AddProductFrame(customtkinter.CTkFrame):
         def add_car(customer, lcplate, color, maker, model, tipo, year):
             self.destroy()
             logic.write_cars("", '{"customer":"'+customer+'", "lcplate":"'+lcplate+'", "color":"'+color+'", "make":"'+maker+'", "model":"'+model+'", "type":"'+tipo+'", "year":"'+year+'"}')
-    
+            comm()
     def set_maker(self, maker):
         with open("data/vehicles.json", "r", encoding='utf-8') as dF: dataC = dF.read(); dF.close()
         data = json.loads(dataC)
@@ -259,7 +259,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame.grid(row=1, column=1, padx=15, pady=5)
 
         self.menu_frame_button_1 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.clock_icon_image, compound="left", command=self.remove_car,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_1.grid(row=2, column=0, padx=10, pady=10)
 
         self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Añadir", image=self.add_icon_image, compound="left", command=self.add_car,
@@ -294,7 +294,7 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
 
-        self.add_item_frame = AddProductFrame(master=self, width=420, corner_radius=10)
+        self.add_item_frame = AddProductFrame(master=self, width=420, corner_radius=10, comm=self.refresh)
         self.add_item_frame.grid(row=0, column=2, padx=(5, 15), pady=10, sticky="nsew")
     
     def mod_car(self):
@@ -317,8 +317,10 @@ class App(customtkinter.CTkFrame):
         self.mod_item_frame.grid(row=0, column=2, padx=(5, 15), pady=10, sticky="nsew")
 
     def refresh(self):
+        self.menu_frame_button_1.configure(state='disabled')
         if self.scrollable_radiobutton_frame != None : self.scrollable_radiobutton_frame.destroy()
         if self.mod_item_frame != None: self.mod_item_frame.destroy()
+        if self.mod_frame != None: self.mod_frame.destroy()
         with open("data/car.json", "r") as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
         if data != ['']:
             self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
@@ -341,6 +343,8 @@ class App(customtkinter.CTkFrame):
         self.refresh()
 
     def radiobutton_frame_event(self):
+        self.menu_frame_button_1.configure(state='normal')
+        if self.mod_item_frame != None: self.mod_item_frame.destroy()
         if self.mod_frame != None: self.mod_frame.destroy()
         self.menu_frame_button_2.destroy()
         self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Modificar", image=self.mod_icon_image, compound="left", command=self.mod_car,

@@ -196,7 +196,13 @@ class App(customtkinter.CTkFrame):
                     if n == Lid and Eid == Lid: id = n
         else:
             if Nid == Lid and Nid == Eid: id = n
+
+        datos = logic.get_works("id", id, "strict")[0]
         logic.remove_data("work.json", id, "id")
+        for item in datos["work"]:
+            stock = logic.get_product('item', item["item"].lower(), 'strict')[0]["stock"]
+            logic.mod_data(item["item"].lower(), 'item', 'stock', str(int(stock)+int(item["quantity"])), "inventory.json")
+        self.refresh()
 
     def cancel(self):
         self.add_customer_frame.destroy()

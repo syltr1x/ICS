@@ -18,7 +18,6 @@ class ScrollableDataFrame(customtkinter.CTkScrollableFrame):
             self.add_item(item)
 
     def add_item(self, item):
-
         label_frame = customtkinter.CTkFrame(self, corner_radius=10, fg_color="gray30")
         label_frame.grid(row=len(self.label_list), column=0, pady=(5, 5))
         label_item = customtkinter.CTkLabel(label_frame, text=item)
@@ -87,7 +86,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame.grid(row=1, column=1, padx=15, pady=5)
 
         self.menu_frame_button_1 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=self.store_work,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_1.grid(row=2, column=0, padx=10, pady=10)
 
         self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
@@ -140,6 +139,7 @@ class App(customtkinter.CTkFrame):
         if self.works_scrollable_frame != None:
             self.works_scrollable_frame.grid_forget()
             self.works_scrollable_frame.destroy_frame()
+        self.menu_frame_button_1.configure(state='normal')
         NpId = []
         LpId = []
         EpId = []

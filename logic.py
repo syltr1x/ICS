@@ -490,16 +490,16 @@ def write_history(dato, write):
     dF.write("[")
     for dato in data:
         item = json.loads(dato)
+        if item["exitdt"] == "--/--/---- , --:--:--": item["exitdt"] = datetime
         item["work"] = str(item["work"]).replace("'", '"').replace("}, {", "}}, {{")[:-1][1:].split("}, {")
-        dF.write('\n    {\n        "id":"'+item["id"]+'",\n        "customer":"'+item["customer"]+'",\n        "lcplate":"'+item["lcplate"]+'",\n        "entrydt":"'+item["entrydt"]+'",\n        "diagnostic":"'+item["diagnostic"]+'",\n        "exitdt":"'+datetime+'",\n        "work":[')
+        dF.write('\n    {\n        "id":"'+item["id"]+'",\n        "customer":"'+item["customer"]+'",\n        "lcplate":"'+item["lcplate"]+'",\n        "entrydt":"'+item["entrydt"]+'",\n        "technician":"'+item["technician"]+'",\n        "diagnostic":"'+item["diagnostic"]+'",\n        "exitdt":"'+item["exitdt"]+'",\n        "work":[')
         for x in item["work"]:
             i = str(x).replace("'", '"')
             i = json.loads(i)
-            if 0 == item["work"].index(x): dF.write('\n            {\n                "item":"'+i["item"]+'",\n                "price":"'+i["price"]+'",\n                "quantity":"'+i["quantity"]+'"\n            }\n            ,')
-            elif len(item["work"])-1 != item["work"].index(x): dF.write('{\n                "item":"'+i["item"]+'",\n                "price":"'+i["price"]+'",\n                "quantity":"'+i["quantity"]+'"\n            }\n            ,')
-            else: dF.write('{\n                "item":"'+i["item"]+'",\n                "price":"'+i["price"]+'",\n                "quantity":"'+i["quantity"]+'"\n            }')
-        if len(data)-1 != data.index(dato): dF.write('\n        ],\n        "price":"'+item["price"]+'",\n        "status":"'+item["status"]+'"\n    },')
-        else: dF.write('\n        ],\n        "price":"'+item["price"]+'",\n        "status":"'+item["status"]+'"\n    }')
+            if 0 != item["work"].index(x): dF.write('\n            ,{\n                "item":"'+i["item"]+'",\n                "price":"'+i["price"]+'",\n                "quantity":"'+i["quantity"]+'"\n            }')
+            else: dF.write('\n            {\n                "item":"'+i["item"]+'",\n                "price":"'+i["price"]+'",\n                "quantity":"'+i["quantity"]+'"\n            }')
+        if len(data)-1 != data.index(dato): dF.write('\n        ],\n        "price":"'+item["price"]+'",\n        "pd":"'+item["pd"]+'",\n        "payed":"'+item["payed"]+'",\n        "status":"'+item["status"]+'"\n    },')
+        else: dF.write('\n        ],\n        "price":"'+item["price"]+'",\n        "pd":"'+item["pd"]+'",\n        "payed":"'+item["payed"]+'",\n        "status":"'+item["status"]+'"\n    }')
     dF.write('\n]')
 
 def remove_data(filename, value, field):

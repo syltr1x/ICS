@@ -79,25 +79,28 @@ class App(customtkinter.CTkFrame):
                 dark_image=Image.open(os.path.join(image_path, "light/back.png")), size=(20, 20))
         self.check_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/check.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/check.png")), size=(20, 20))
-        self.budget_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/budget.png")),
-                dark_image=Image.open(os.path.join(image_path, "light/budget.png")), size=(20, 20))
+        self.remove_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/trash.png")),
+                dark_image=Image.open(os.path.join(image_path, "light/trash.png")), size=(20, 20))
 
         with open("data/work.json", "r", encoding='utf8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
+        if datab != [''] and type(datab) == list and datab != ['\n']:
+            items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
+        else: items = []
         self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
-            item_list=[f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab] if datab != [''] else [],
-            corner_radius=10)
+            item_list=items, corner_radius=10)
         self.scrollable_radiobutton_frame.grid(row=0, column=0, padx=(20, 20), pady=10, sticky="ns")
+
 
         # create footer-menu
         self.menu_frame = customtkinter.CTkFrame(self, corner_radius=10)
         self.menu_frame.grid(row=1, column=0, padx=15, pady=5)
 
         self.menu_frame_button_1 = customtkinter.CTkButton(self.menu_frame, text="Historico", image=self.clock_icon_image, compound="left", command=self.store_work,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_1.grid(row=2, column=0, padx=10, pady=10)
 
-        self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Rehacer", image=self.budget_icon_image, compound="left", command=self.remove_work,
-                text_color=("gray10", "gray90"))
+        self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=self.remove_work,
+                text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
 
         self.menu_frame_button_3 = customtkinter.CTkButton(self.menu_frame, text="Actualizar", image=self.refresh_icon_image, compound="left", command=self.refresh,
@@ -110,6 +113,8 @@ class App(customtkinter.CTkFrame):
 
     # Scrollables Frames Function
     def refresh(self):
+        # self.menu_frame_button_1.configure(state='disabled')
+        # self.menu_frame_button_2.configure(state='disabled')
         if self.add_customer_frame != None: self.cancel()
         if self.data_frame != None: self.data_frame.destroy()
         if self.works_scrollable_frame != None:
@@ -117,9 +122,11 @@ class App(customtkinter.CTkFrame):
             self.works_scrollable_frame.destroy_frame()
         self.scrollable_radiobutton_frame.destroy()
         with open("data/work.json", "r", encoding='utf8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
+        if datab != [''] and type(datab) == list and datab != ['\n']:
+            items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
+        else: items = []
         self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
-            item_list=[f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab] if datab != [''] else [],
-            corner_radius=10)
+            item_list=items, corner_radius=10)
         self.scrollable_radiobutton_frame.grid(row=0, column=0, padx=(20, 20), pady=10, sticky="ns")
   
     def back(self, file):
@@ -198,12 +205,7 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
         
-        # create scrollable radiobutton frame | 
-        with open("data/work.json", "r", encoding='utf8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
-        self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
-            item_list=[f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab] if datab != [''] else [],
-            corner_radius=10)
-        self.scrollable_radiobutton_frame.grid(row=0, column=0, padx=(20, 20), pady=10, sticky="ns")
+        self.refresh()
 
     def uprices(self, id, lista):
         logic.update_prices(id, lista)
@@ -237,6 +239,8 @@ class App(customtkinter.CTkFrame):
         payW.mainloop()
 
     def radiobutton_frame_event(self):
+        self.menu_frame_button_1.configure(state='normal')
+        self.menu_frame_button_2.configure(state='normal')
         dato = self.scrollable_radiobutton_frame.get_checked_item().split(" -/- ")
         if self.data_frame != None:
             self.data_frame.destroy()
@@ -305,9 +309,10 @@ class App(customtkinter.CTkFrame):
         self.refbtn = customtkinter.CTkButton(self.data_frame, text="Actualizar Precios", command=lambda:(self.uprices(dato["id"], "works")))
         self.refbtn.grid(row=4, column=0, pady=15, padx=15 if dato["status"] != "pagado" else None)
 
-        self.exitbtn = customtkinter.CTkButton(self.data_frame, text="Vehiculo Entregado", command=lambda:(self.upd_exit(dato["id"])))
+        self.exitbtn = customtkinter.CTkButton(self.data_frame, command=lambda:(self.upd_exit(dato["id"])))
         self.exitbtn.grid(row=5, column=0, pady=15, padx=15)
-        self.exitbtn.configure(state="disabled" if dato["exitdt"] != "--/--/---- , --:--:--" else "enabled")
+        self.exitbtn.configure(state="disabled" if dato["exitdt"] != "--/--/---- , --:--:--" and dato["exitdt"] != "--/--/----" else "normal")
+        self.exitbtn.configure(text="Vehiculo Entregado" if dato["exitdt"] != "--/--/---- , --:--:--" and dato["exitdt"] != "--/--/----" else "Entregar Vehiculo")
 
         self.works_scrollable_frame = ScrollableDataFrame(master=self, width=500, label_text=f'Diagnostico : {dato["diagnostic"]}\n Total : {dato["price"]}', corner_radius=10,
                 item_list=[f'Item : '+json.loads(str(i).replace("'", '"'))["item"]+'\nPrecio/u : $'+str(int(int(json.loads(str(i).replace("'", '"'))["price"])/int(json.loads(str(i).replace("'", '"'))["quantity"])))+

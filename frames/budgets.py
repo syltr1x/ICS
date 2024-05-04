@@ -7,7 +7,7 @@ import os
 import ast
 
 class AddCustomerFrame(customtkinter.CTkFrame):
-    def __init__(self, master, command=None, **kwargs):
+    def __init__(self, master, comm=None, **kwargs):
         super().__init__(master, **kwargs)
 
         image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../img")
@@ -64,10 +64,6 @@ class AddCustomerFrame(customtkinter.CTkFrame):
                 self.customer_entry = customtkinter.CTkComboBox(self, values=[i for i in clientes], button_hover_color="gray10", corner_radius=5, fg_color="gray50")
                 self.customer_entry.grid(row=0, column=0, padx=(170, 10), pady=(20, 20))
                 self.customer_entry.set(f'Resultados : {len(clientes)}')
-
-        def set_tech(tech):
-            global technician
-            technician = tech
                 
         clientes = get_data("customer")
         mecanicos = get_data("technician")
@@ -77,38 +73,42 @@ class AddCustomerFrame(customtkinter.CTkFrame):
         self.customer_filter_btn = customtkinter.CTkButton(self, image=self.loupe_icon_image, text="", width=1, command=lambda:(searcher("customer", self.customer_entry.get())))
         self.customer_filter_btn.grid(row=0, column=0, padx=(10, 0), pady=(5, 5), sticky='w')
 
-        self.customer_entry = customtkinter.CTkComboBox(self, values=[i for i in clientes], button_hover_color="gray10", corner_radius=5, fg_color="gray50")
+        self.customer_entry = customtkinter.CTkComboBox(self, values=[i for i in clientes], button_hover_color="gray10",
+                button_color="gray30", corner_radius=5, fg_color="gray50")
         self.customer_entry.set("Clientes")
         self.customer_entry.grid(row=0, column=0, padx=(50, 10), pady=(20, 20))
 
-        self.lcplate_entry = customtkinter.CTkComboBox(self, values=[i for i in patentes], button_hover_color="gray10", corner_radius=5, fg_color="gray50")
+        self.lcplate_entry = customtkinter.CTkComboBox(self, values=[i for i in patentes], button_hover_color="gray10",
+                button_color="gray30", corner_radius=5, fg_color="gray50")
         self.lcplate_entry.set("Dominio")
         self.lcplate_entry.grid(row=1, column=0, padx=(50, 10), pady=(20, 20))
 
-        self.technician_entry = customtkinter.CTkOptionMenu(self, values=[i for i in mecanicos], button_hover_color="gray10", corner_radius=5, fg_color="gray50", command=set_tech)
-        self.technician_entry.set("Tecnicos")
+        self.technician_entry = customtkinter.CTkComboBox(self, values=[i for i in mecanicos], button_hover_color="gray10",
+                button_color="gray30", corner_radius=5, fg_color="gray50")
+        self.technician_entry.set("Mecanicos")
         self.technician_entry.grid(row=0, column=1, padx=(10, 20), pady=(20, 20))
 
-        self.concepto_entry = customtkinter.CTkOptionMenu(self, values=[i for i in concepts], button_hover_color="gray10", corner_radius=5, fg_color="gray50")
+        self.concepto_entry = customtkinter.CTkOptionMenu(self, values=[i for i in concepts], button_hover_color="gray10",
+                button_color="gray30", corner_radius=5, fg_color="gray50")
         self.concepto_entry.set("Concepto")
         self.concepto_entry.grid(row=1, column=1, padx=(10, 20), pady=(20, 20))
 
         self.in_entry_check = customtkinter.CTkCheckBox(self, command=lambda:(auto_date()), text="", width=220)
-        self.in_entry_check.grid(row=2, column=1, padx=(0, 0), pady=(5, 5))
+        self.in_entry_check.grid(row=3, column=0, padx=(15, 5), pady=(5, 5))
 
         self.in_entry = customtkinter.CTkEntry(self, placeholder_text="dd/mm/aaaa,hh:mm:ss", width=150)
-        self.in_entry.grid(row=2, column=1, padx=(0, 20), pady=(20, 20))
+        self.in_entry.grid(row=3, column=0, padx=(20, 20), pady=(20, 20))
         
         self.columnconfigure(1, weight=1)
 
         self.work_items_frame = customtkinter.CTkFrame(self, width=200, height=80)
-        self.work_items_frame.grid(row=3, column=0, columnspan=2, padx=(5, 5), pady=(5, 5))
+        self.work_items_frame.grid(row=2, column=0, columnspan=2, padx=(5, 5), pady=(5, 5))
         self.work_items_title = customtkinter.CTkLabel(self.work_items_frame, text="Lista de productos").grid(row=0, column=0, padx=(15,0), sticky="w")
         self.work_item_add = customtkinter.CTkButton(self.work_items_frame, text="Añadir Item", command=lambda:(add_work_item())).grid(row=0, column=-0, padx=(180,0), sticky='w')
 
         self.add_customer_button = customtkinter.CTkButton(self, text="Crear Presupuesto", command=lambda:(add_work(self.customer_entry.get().capitalize(), self.lcplate_entry.get().upper(),
-                technician, self.in_entry.get(), self.concepto_entry.get())))
-        self.add_customer_button.grid(row=2, column=0, padx=(10, 10), pady=(20,20), sticky="nsew")
+                self.technician_entry.get(), self.in_entry.get(), self.concepto_entry.get())))
+        self.add_customer_button.grid(row=3, column=1, padx=(0, 10), pady=(20,20), sticky="nsew")
 
         global works
         works= []
@@ -122,6 +122,7 @@ class AddCustomerFrame(customtkinter.CTkFrame):
             for p in works: price = price+int(json.loads("{"+p+"}")["price"]); work.append(json.loads("{"+p+"}"))
             logic.write_budget("", '{"id":"'+logic.get_id("budget.json")+'", "customer":"'+name+'", "lcplate":"'+lcplate+'", "technician":"'+technician+'","entrydt":"'+entry+'", "diagnostic":"'+diagnostic+'", "work":'+str(work).replace("'", '"')+', "price":"'+str(price)+'", "pd":"'+entry.split(' , ')[0]+'"}')
             self.destroy()
+            comm()
 
 class NewWork(customtkinter.CTkFrame):
     def __init__(self, master, command=None, **kwargs):
@@ -239,15 +240,14 @@ class App(customtkinter.CTkFrame):
                 dark_image=Image.open(os.path.join(image_path, "light/add.png")), size=(20, 20))
         self.refresh_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/refresh.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/refresh.png")), size=(20, 20))
-        self.back_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/back.png")),
-                dark_image=Image.open(os.path.join(image_path, "light/back.png")), size=(20, 20))
         self.check_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/check.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/check.png")), size=(20, 20))
         self.remove_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/trash.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/trash.png")), size=(20, 20))
 
         with open("data/budget.json", "r", encoding='utf8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
-        if datab != [''] and datab != ['\n']: items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
+        if datab != [''] and type(datab) == list and datab != ['\n']:
+            items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
         else: items = []
         self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
             item_list=items, corner_radius=10)
@@ -258,7 +258,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame.grid(row=1, column=0, padx=15, pady=5)
 
         self.menu_frame_button_1 = customtkinter.CTkButton(self.menu_frame, text="Aprobado", image=self.check_icon_image, compound="left", command=self.aprobe_budget,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_1.grid(row=2, column=0, padx=10, pady=10)
 
         self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Añadir", image=self.add_icon_image, compound="left", command=self.add_budget,
@@ -269,8 +269,8 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
-        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.back_icon_image, compound="left", command=lambda:(self.back(self, "budget.json")),
-                text_color=("gray10", "gray90"))
+        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=lambda:(self.back(self, "budget.json")),
+                text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
         # Scrollables Frames Function
@@ -306,8 +306,14 @@ class App(customtkinter.CTkFrame):
 
         open("data/temp/budget.json", "w").write(open("data/budget.json" ,"r").read())
         datos = logic.get_budget("id", id, "strict")[0]
+        datos["exitdt"] = "--/--/----"
+        datos["payed"] = '0'
+        datos["status"] = 'adeuda'
         logic.write_works('', str(datos).replace("'", '"'))
         logic.remove_data("budget.json", id, "id")
+        for item in datos["work"]:
+            stock = logic.get_product('item', item["item"].lower(), 'strict')["stock"]
+            logic.mod_data(item["item"].lower(), 'item', 'stock', stock-item["quantity"], "inventory.json")
         self.refresh()
 
     def add_budget(self):
@@ -317,10 +323,12 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
 
-        self.add_customer_frame = AddCustomerFrame(master=self, width=420, corner_radius=10)
+        self.add_customer_frame = AddCustomerFrame(master=self, width=420, corner_radius=10, comm=self.refresh)
         self.add_customer_frame.grid(row=0, column=2, padx=(5, 15), pady=10, sticky="nsew")
 
     def refresh(self):
+        self.menu_frame_button_1.configure(state='disabled')
+        self.menu_frame_button_4.configure(state='disabled')
         if self.add_customer_frame != None: self.cancel()
         if self.data_frame != None: self.data_frame.destroy()
         if self.works_scrollable_frame != None:
@@ -328,7 +336,8 @@ class App(customtkinter.CTkFrame):
             self.works_scrollable_frame.destroy_frame()
         self.scrollable_radiobutton_frame.destroy()
         with open("data/budget.json", "r", encoding='utf8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
-        if datab != [''] and datab != ['\n']: items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
+        if datab != [''] and type(datab) == list and datab != ['\n']: 
+            items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
         else: items = []
         self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
             item_list=items, corner_radius=10)
@@ -359,6 +368,8 @@ class App(customtkinter.CTkFrame):
         self.refresh()
 
     def radiobutton_frame_event(self):
+        self.menu_frame_button_1.configure(state='normal')
+        self.menu_frame_button_4.configure(state='normal')
         dato = self.scrollable_radiobutton_frame.get_checked_item().split(" -/- ")
         if self.data_frame != None:
             self.data_frame.destroy()

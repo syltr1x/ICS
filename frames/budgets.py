@@ -269,7 +269,7 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"))
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
-        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=lambda:(self.back(self, "budget.json")),
+        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=self.remove_budget,
                 text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
@@ -312,8 +312,40 @@ class App(customtkinter.CTkFrame):
         logic.write_works('', str(datos).replace("'", '"'))
         logic.remove_data("budget.json", id, "id")
         for item in datos["work"]:
-            stock = logic.get_product('item', item["item"].lower(), 'strict')["stock"]
-            logic.mod_data(item["item"].lower(), 'item', 'stock', stock-item["quantity"], "inventory.json")
+            stock = logic.get_product('item', item["item"].lower(), 'strict')[0]["stock"]
+            logic.mod_data(item["item"].lower(), 'item', 'stock', str(int(stock)-int(item["quantity"])), "inventory.json")
+        self.refresh()
+
+    def remove_budget(self):
+        self.data_frame.destroy()
+        NpId = []
+        LpId = []
+        EpId = []
+        Nid = logic.get_budget("customer", self.scrollable_radiobutton_frame.get_checked_item().split(" -/- ")[0], "strict")
+        Lid = logic.get_budget("lcplate", self.scrollable_radiobutton_frame.get_checked_item().split(" -/- ")[1], "strict")
+        Eid = logic.get_budget("entrydt", self.scrollable_radiobutton_frame.get_checked_item().split(" -/- ")[2], "strict")
+
+        if type(Nid) == list:
+            for item in Nid:  NpId.append(json.loads(str(item).replace("'", '"'))["id"])
+        if type(Lid) == list:
+            for item in Lid:  LpId.append(json.loads(str(item).replace("'", '"'))["id"])
+        if type(Eid) == list:
+            for item in Eid: EpId.append(json.loads(str(item).replace("'", '"'))["id"])
+        if type(NpId):
+            for n in NpId:
+                if type(LpId):
+                    for l in LpId:
+                        if type(EpId):
+                            for e in EpId:
+                                if n == e and e == l: id = n
+                        else:
+                            if n == l and Eid == l: id = n
+                else:
+                    if n == Lid and Eid == Lid: id = n
+        else:
+            if Nid == Lid and Nid == Eid: id = n
+
+        logic.remove_data("budget.json", id, "id")
         self.refresh()
 
     def add_budget(self):

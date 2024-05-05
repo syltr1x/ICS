@@ -60,7 +60,7 @@ def get_id(data):
     return str(int(dato["id"])+1)
 
 def order_id(filename):
-    if filename != "account.json" and filename != "customer.json" and filename != "work.json" and filename != "history.json" and filename != "balance.json": return 0
+    if filename != "account.json" and filename != "customer.json" and filename != "work.json" and filename != "history.json" and filename != "balance.json" and filename != "budget.json": return 0
     file = open(f"data/{filename}", "r", encoding='utf-8')
     dato = file.read()
     dato = dato[:-1][1:].replace("},", "}},").split("},") if filename != "balance.json" else dato[:-1][1:].replace(",{", ",{{").split(",{")
@@ -68,7 +68,7 @@ def order_id(filename):
     cntr = "0"
     data = []
     if type(dato) != list and len(dato) < 5: return 0
-    if type(dato) == list and dato == [''] or []: return 0
+    if dato == [''] or dato == [] or dato == ['\n']: return 0
     open(f'data/{filename}', 'w', encoding='utf-8').write('')
     # Order para Balance
     if filename == "balance.json":

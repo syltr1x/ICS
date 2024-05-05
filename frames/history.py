@@ -73,21 +73,19 @@ class App(customtkinter.CTkFrame):
                 dark_image=Image.open(os.path.join(image_path, "light/back.png")), size=(20, 20))
         
         # create scrollable radiobutton frame
-        with open("data/history.json", "r") as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
-        if data != ['']:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
-                    item_list=[f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in data],                                                                       
-                    label_text="Lista de Trabajos Archivados", corner_radius=10)
-        else:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
-                    item_list=[], label_text="Lista de Trabajos Archivados", corner_radius=10)
+        with open("data/history.json", "r") as dF: data = dF.read(); dF.close(); datab = data[:-1][1:].replace("},","}},").split("},")
+        if datab != [''] and type(datab) == list and datab != ['\n']:
+            items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
+        else: items = []
+        self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
+                item_list=items, label_text="Lista de Trabajos Archivados", corner_radius=10)
         self.scrollable_radiobutton_frame.grid(row=0, column=1, padx=(15, 5), pady=10, sticky="ns")
 
         # create footer-menu
         self.menu_frame = customtkinter.CTkFrame(self, corner_radius=10)
         self.menu_frame.grid(row=1, column=1, padx=15, pady=5)
 
-        self.menu_frame_button_1 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=self.store_work,
+        self.menu_frame_button_1 = customtkinter.CTkButton(self.menu_frame, text="Eliminar", image=self.remove_icon_image, compound="left", command=self.remove_work,
                 text_color=("gray10", "gray90"), state='disabled')
         self.menu_frame_button_1.grid(row=0, column=0, padx=10, pady=10)
 
@@ -99,7 +97,7 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"), state='normal' if os.path.exists('data/temp/history.json') else 'disabled')
         self.menu_frame_button_3.grid(row=1, column=0, padx=10, pady=10, columnspan='2', sticky='nsew')
 
-    def store_work(self):
+    def remove_work(self):
         self.data_frame.destroy()
         NpId = []
         LpId = []
@@ -129,7 +127,6 @@ class App(customtkinter.CTkFrame):
             if Nid == Lid and Nid == Eid: id = n
 
         open("data/temp/history.json", "w").write(open("data/history.json" ,"r").read())
-        logic.write_history('', str(logic.get_works("id", id, "strict")).replace("'", '"')[:-1][1:])
         logic.remove_data("history.json", id, "id")
         self.refresh()
 
@@ -141,20 +138,17 @@ class App(customtkinter.CTkFrame):
 
     def refresh(self):
         self.menu_frame_button_1.configure(state='disabled')
-        if self.add_customer_frame != None: self.cancel()
         if self.data_frame != None: self.data_frame.destroy()
         if self.works_scrollable_frame != None:
             self.works_scrollable_frame.grid_forget()
             self.works_scrollable_frame.destroy_frame()
         self.scrollable_radiobutton_frame.destroy()
-        with open("data/history.json", "r") as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
-        if data != ['']:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
-                    item_list=[f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in data],                                                                       
-                    label_text="Lista de Trabajos Archivados", corner_radius=10)
-        else:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
-                    item_list=[], label_text="Lista de Trabajos Archivados", corner_radius=10)
+        with open("data/history.json", "r") as dF: data = dF.read(); dF.close(); datab = data[:-1][1:].replace("},","}},").split("},")
+        if datab != [''] and type(datab) == list and datab != ['\n']:
+            items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
+        else: items = []
+        self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=350, command=self.radiobutton_frame_event,
+                item_list=items, label_text="Lista de Trabajos Archivados", corner_radius=10)
         self.scrollable_radiobutton_frame.grid(row=0, column=1, padx=(15, 5), pady=10, sticky="ns")
 
     def radiobutton_frame_event(self):

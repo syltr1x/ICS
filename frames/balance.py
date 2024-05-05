@@ -27,7 +27,7 @@ class MonthFrame(customtkinter.CTkFrame):
                     aum = aum+1
                     cl = 0
                 l.grid(row=i+aum, column=cl, padx=5, pady=5)
-                data = open('data/balance.json', 'r', encoding='utf8').read()
+                data = open('data/balance.json', 'r', encoding='utf-8').read()
                 data = data[:-1][1:].replace(',{', ',{{').split(',{') if len(data) > 5 else []; ck=False
                 for a in data:
                     a = json.loads(a)
@@ -47,7 +47,7 @@ class dayFrame(customtkinter.CTk):
     def __init__(self, dato):
         super().__init__()
 
-        main = customtkinter.CTkScrollableFrame(self, fg_color='gray20', width=250)
+        main = customtkinter.CTkScrollableFrame(self, fg_color='gray20', width=250, height=400)
         main.grid(row=0, column=0, padx=20)
         # Variables
         day = dato.split('|')[0]
@@ -55,11 +55,11 @@ class dayFrame(customtkinter.CTk):
         year = dato.split('|')[2]
         itera = 1
         self.title(f"Resumen de: {day}/{month}/{year}")
-        self.geometry('380x220')
+        self.geometry('300x420')
         self.resizable(False, False)
         
         # Leer Datos
-        data = open('data/balance.json', 'r', encoding='utf8').read()[:-1][1:].replace(',{', ',{{').split(',{')
+        data = open('data/balance.json', 'r', encoding='utf-8').read()[:-1][1:].replace(',{', ',{{').split(',{')
         for i in data:
             i = json.loads(i)
             if i["date"] == f"{day}/{month}/{year}":

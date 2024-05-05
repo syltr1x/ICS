@@ -24,7 +24,7 @@ def get_config():
     return config
 
 def mod_config(datos):
-    file = open("data/config.json", "r", encoding='utf8'); data = json.loads(file.read()); file.close()
+    file = open("data/config.json", "r", encoding='utf-8'); data = json.loads(file.read()); file.close()
     for dato in datos:
         if dato["field"] == "theme":
             theme = dato["value"]
@@ -39,7 +39,7 @@ def mod_config(datos):
                 dato["value"] = modes[mode.lower()]
             else: dato["value"] = mode.lower()
         data[dato["field"]] = dato["value"]
-    file = open("data/config.json", "w", encoding='utf8')
+    file = open("data/config.json", "w", encoding='utf-8')
     file.write('{\n    "vkey":"'+data["vkey"]+'",\n    "path":"'+data["path"].replace("\\","\\\\")+'",\n    "mode":"'+data["mode"]+'",\n    "theme":"'+data["theme"]+'",\n    "mechanics":"'+data["mechanics"]+'"\n}')
     file.close()
 
@@ -61,7 +61,7 @@ def get_id(data):
 
 def order_id(filename):
     if filename != "account.json" and filename != "customer.json" and filename != "work.json" and filename != "history.json" and filename != "balance.json": return 0
-    file = open(f"data/{filename}", "r", encoding='utf8')
+    file = open(f"data/{filename}", "r", encoding='utf-8')
     dato = file.read()
     dato = dato[:-1][1:].replace("},", "}},").split("},") if filename != "balance.json" else dato[:-1][1:].replace(",{", ",{{").split(",{")
     file.close()
@@ -69,7 +69,7 @@ def order_id(filename):
     data = []
     if type(dato) != list and len(dato) < 5: return 0
     if type(dato) == list and dato == [''] or []: return 0
-    open(f'data/{filename}', 'w', encoding='utf8').write('')
+    open(f'data/{filename}', 'w', encoding='utf-8').write('')
     # Order para Balance
     if filename == "balance.json":
         dates = []
@@ -83,7 +83,7 @@ def order_id(filename):
                 movements.append(m)
             d["movements"] = movements
             dates.append(d)
-        file = open(f"data/{filename}", 'w', encoding='utf8')
+        file = open(f"data/{filename}", 'w', encoding='utf-8')
         file.write("[")
         for d in dates:
             if dates.index(d) != 0: file.write('\n    ,{\n        "date":"'+d["date"]+'",\n        "balance":"'+d["balance"]+'",\n        "movements":[')
@@ -148,7 +148,7 @@ def pay_work(date, id, pay, data, mecanico):
 
 def add_balance(date, client, tech, price, desc):
     movements = []
-    dato = open('data/balance.json', "r", encoding='utf8').read()
+    dato = open('data/balance.json', "r", encoding='utf-8').read()
     dato = dato[:-1][1:].replace(",{", ",{{").split(",{")
     for d in dato:
         if json.loads(d)["date"] == date:
@@ -160,7 +160,7 @@ def add_balance(date, client, tech, price, desc):
     mod_data(date, "date", "balance", nbalance, "balance.json")
 
 def del_balance(date, id):
-    dato = open('data/balance.json', "r", encoding='utf8').read()
+    dato = open('data/balance.json', "r", encoding='utf-8').read()
     dato = dato[:-1][1:].replace(",{", ",{{").split(",{")
     for d in dato:
         d = json.loads(d)

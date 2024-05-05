@@ -156,7 +156,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
     def remove_item(self):
-        open("data/temp/inventory.json", "w", encoding='utf8').write(open("data/inventory.json", "r", encoding='utf8').read()) # Temp Save
+        open("data/temp/inventory.json", "w", encoding='utf-8').write(open("data/inventory.json", "r", encoding='utf-8').read()) # Temp Save
         item = str(self.scrollable_radiobutton_frame.get_checked_item())
         logic.remove_data("inventory.json", item, "item")
         self.refresh()

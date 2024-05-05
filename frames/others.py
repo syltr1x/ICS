@@ -60,14 +60,14 @@ class AddSaleFrame(customtkinter.CTkFrame):
                 logic.add_balance(logic.get_date(), name, tech, price, desc)
                 comm()
 
-            file = open("data/config.json", 'r', encoding='utf8')
+            file = open("data/config.json", 'r', encoding='utf-8')
             self.config_data = json.loads(file.read())
             file.close()
 
             # Obtain Clients and Accounts Data
             self.acc_type_values = []
-            self.customers = open('data/customer.json', 'r', encoding='utf8').read()[:-1][1:].replace("\n", "").replace('},','}},').split('},')
-            self.accounts = open('data/account.json', 'r', encoding='utf8').read()[:-1][1:].replace("\n", "").replace('},','}},').split('},')
+            self.customers = open('data/customer.json', 'r', encoding='utf-8').read()[:-1][1:].replace("\n", "").replace('},','}},').split('},')
+            self.accounts = open('data/account.json', 'r', encoding='utf-8').read()[:-1][1:].replace("\n", "").replace('},','}},').split('},')
             if self.customers != [''] and type(self.customers) == list:
                 self.acc_type_values.append("Clientes")
             if self.accounts != [''] and type(self.accounts) == list:
@@ -129,7 +129,7 @@ class App(customtkinter.CTkFrame):
                 dark_image=Image.open(os.path.join(image_path, "light/back.png")), size=(20, 20))
         
         # create scrollable radiobutton frame
-        with open("data/balance.json", "r", encoding='utf8') as dF: data = dF.read()
+        with open("data/balance.json", "r", encoding='utf-8') as dF: data = dF.read()
         dF.close()
         data = data[:-1][1:].replace(',{', ',{{').split(',{')if len(data) > 5 else []
         ilist = []
@@ -197,7 +197,7 @@ class App(customtkinter.CTkFrame):
         if self.account_list_frame != None: self.account_list_frame.destroy()
         if self.add_customer_frame != None: self.add_account_frame.destroy()
         self.menu_frame_button_1.configure(state='disabled')
-        with open("data/balance.json", "r", encoding='utf8') as dF: data = dF.read()
+        with open("data/balance.json", "r", encoding='utf-8') as dF: data = dF.read()
         dF.close()
         data = data[:-1][1:].replace(',{', ',{{').split(',{')if len(data) > 5 else []
         ilist = []

@@ -82,7 +82,7 @@ class App(customtkinter.CTkFrame):
         self.remove_icon_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "dark/trash.png")),
                 dark_image=Image.open(os.path.join(image_path, "light/trash.png")), size=(20, 20))
 
-        with open("data/work.json", "r", encoding='utf8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
+        with open("data/work.json", "r", encoding='utf-8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
         if datab != [''] and type(datab) == list and datab != ['\n']:
             items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
         else: items = []
@@ -121,7 +121,7 @@ class App(customtkinter.CTkFrame):
             self.works_scrollable_frame.grid_forget()
             self.works_scrollable_frame.destroy_frame()
         self.scrollable_radiobutton_frame.destroy()
-        with open("data/work.json", "r", encoding='utf8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
+        with open("data/work.json", "r", encoding='utf-8') as dF: datab = dF.read(); dF.close(); datab = datab[:-1][1:].replace("},","}},").split("},")
         if datab != [''] and type(datab) == list and datab != ['\n']:
             items = [f'{json.loads(i)["customer"]} -/- {json.loads(i)["lcplate"]} -/- {json.loads(i)["entrydt"]}' for i in datab]
         else: items = []
@@ -130,7 +130,7 @@ class App(customtkinter.CTkFrame):
         self.scrollable_radiobutton_frame.grid(row=0, column=0, padx=(20, 20), pady=10, sticky="ns")
   
     def back(self, file):
-        open(f'data/{file}', "w", encoding='utf8').write(open(f'data/temp/{file}', "r", encoding='utf8').read())
+        open(f'data/{file}', "w", encoding='utf-8').write(open(f'data/temp/{file}', "r", encoding='utf-8').read())
         os.remove(f'data/temp/{file}')
         self.refresh(self)
 

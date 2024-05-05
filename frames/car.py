@@ -277,7 +277,7 @@ class App(customtkinter.CTkFrame):
     def remove_car(self):
         open("data/temp/car.json", "w").write(open("data/car.json", "r").read()) # Temp Save
         lcplate = str(self.scrollable_radiobutton_frame.get_checked_item()).split(' - ')[0]
-        logic.remove_data("car.json", lcplate, "lcpate")
+        logic.remove_data("car.json", lcplate, "lcplate")
         self.refresh()
 
     def add_car(self):
@@ -321,14 +321,12 @@ class App(customtkinter.CTkFrame):
         if self.scrollable_radiobutton_frame != None : self.scrollable_radiobutton_frame.destroy()
         if self.mod_item_frame != None: self.mod_item_frame.destroy()
         if self.mod_frame != None: self.mod_frame.destroy()
-        with open("data/car.json", "r") as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
-        if data != ['']:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
-                    item_list=[f'{json.loads(i)["lcplate"]} - {json.loads(i)["model"]}' for i in data],                                                                       
-                    label_text="Lista de Autos", corner_radius=10)
-        else:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
-                item_list=[], label_text="Lista de Autos", corner_radius=10)
+        with open("data/car.json", "r") as dF: data = dF.read(); dF.close(); datab = data[:-1][1:].replace("},","}},").split("},")
+        if datab != [''] and type(datab) == list and datab != ['\n']: 
+            item = [f'{json.loads(i)["lcplate"]} - {json.loads(i)["model"]}' for i in data]
+        else: item = []
+        self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
+                item_list=item, label_text="Lista de Autos", corner_radius=10)
         self.scrollable_radiobutton_frame.configure(width=292)
         self.scrollable_radiobutton_frame.grid(row=0, column=1, padx=(15, 5), pady=10, sticky="ns")
 

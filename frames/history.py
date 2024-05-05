@@ -90,7 +90,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_1.grid(row=2, column=0, padx=10, pady=10)
 
         self.menu_frame_button_2 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='normal' if os.path.exists('data/temp/history.json') else 'disabled')
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
 
     def store_work(self):
@@ -128,9 +128,9 @@ class App(customtkinter.CTkFrame):
         self.refresh()
 
     def back(self):
-        file = str(os.listdir('data/temp/'))[:-2][2:]
-        open(f'data/{file}', "w").write(open(f'data/temp/{file}', "r").read())
-        os.remove(f'data/temp/{file}')
+        old_data = open('data/temp/history.json', 'r', encoding='utf-8').read()
+        open('data/history.json', 'w', encoding='utf-8').write(old_data)
+        os.remove(f'data/temp/history.json')
         self.refresh()
 
     def radiobutton_frame_event(self):

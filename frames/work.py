@@ -108,7 +108,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
         self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='normal' if os.path.exists('data/temp/work.json') else 'disabled')
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
     # Scrollables Frames Function
@@ -130,9 +130,10 @@ class App(customtkinter.CTkFrame):
         self.scrollable_radiobutton_frame.grid(row=0, column=0, padx=(20, 20), pady=10, sticky="ns")
   
     def back(self, file):
-        open(f'data/{file}', "w", encoding='utf-8').write(open(f'data/temp/{file}', "r", encoding='utf-8').read())
-        os.remove(f'data/temp/{file}')
-        self.refresh(self)
+        old_data = open('data/temp/work.json', 'r', encoding='utf-8').read()
+        open('data/work.json', 'w', encoding='utf-8').write(old_data)
+        os.remove(f'data/temp/work.json')
+        self.refresh()
 
     def store_work(self):
         self.data_frame.destroy()

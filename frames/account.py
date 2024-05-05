@@ -491,11 +491,11 @@ class App(customtkinter.CTkFrame):
         self.account_list_frame = AccountsListFrame(master=self, width=300, filename=file, command=self.select_account)
         self.account_list_frame.grid(row=0, column=1, padx=(20, 20), pady=10, sticky="ns")
     
-    def back(self):
-        file = str(os.listdir('data/temp/'))[:-2][2:]
-        open(f'data/{file}', "w").write(open(f'data/temp/{file}', "r").read())
-        os.remove(f'data/temp/{file}')
-        self.refresh(file)
+    def back(self, file):
+        old_data = open('data/temp/account.json', 'r', encoding='utf-8').read()
+        open('data/account.json', 'w', encoding='utf-8').write(old_data)
+        os.remove(f'data/temp/account.json')
+        self.refresh()
 
     # buttons frames actions
     def select_account_type(self):
@@ -529,8 +529,8 @@ class App(customtkinter.CTkFrame):
                 text_color=("gray10", "gray90"), state="disabled")
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
-        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
-                text_color=("gray10", "gray90"))
+        self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=lambda:(self.back(self.fileT)),
+                text_color=("gray10", "gray90"), state='normal' if os.path.exists(f'data/temp/{self.fileT}') else 'disabled')
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
         self.menu_frame_button_5 = customtkinter.CTkButton(self.menu_frame, text="Añadir Vehículo", image=self.car_icon_image, compound="left", command=self.add_car,

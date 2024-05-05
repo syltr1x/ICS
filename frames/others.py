@@ -163,7 +163,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
         self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='normal' if os.path.exists('data/temp/balance.json') else 'disabled')
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
     # footer-menu functions
@@ -215,10 +215,9 @@ class App(customtkinter.CTkFrame):
         self.scrollable_radiobutton_frame.grid(row=0, column=0, padx=(20, 20), pady=10, sticky="ns")
     
     def back(self):
-        file = str(os.listdir('data/temp/'))[:-2][2:]
-        open(f'data/{file}', "w").write(open(f'data/temp/{file}', "r").read())
-        os.remove(f'data/temp/{file}')
-        logic.order_id('balance.json')
+        old_data = open('data/temp/balance.json', 'r', encoding='utf-8').read()
+        open('data/balance.json', 'w', encoding='utf-8').write(old_data)
+        os.remove(f'data/temp/balance.json')
         self.refresh()
 
     # buttons frames actions

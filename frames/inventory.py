@@ -152,7 +152,7 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_3.grid(row=3, column=1, padx=10, pady=10)
 
         self.menu_frame_button_4 = customtkinter.CTkButton(self.menu_frame, text="Revertir", image=self.back_icon_image, compound="left", command=self.back,
-                text_color=("gray10", "gray90"))
+                text_color=("gray10", "gray90"), state='normal' if os.path.exists('data/temp/inventory.json') else 'disabled')
         self.menu_frame_button_4.grid(row=3, column=0, padx=10, pady=10)
 
     def remove_item(self):
@@ -216,9 +216,9 @@ class App(customtkinter.CTkFrame):
         self.menu_frame_button_2.grid(row=2, column=1, padx=10, pady=10)
     
     def back(self):
-        file = str(os.listdir('data/temp/'))[:-2][2:]
-        open(f'data/{file}', "w").write(open(f'data/temp/{file}', "r").read())
-        os.remove(f'data/temp/{file}')
+        old_data = open('data/temp/inventory.json', 'r', encoding='utf-8').read()
+        open('data/inventory.json', 'w', encoding='utf-8').write(old_data)
+        os.remove(f'data/temp/inventory.json')
         self.refresh()
 
     def radiobutton_frame_event(self):

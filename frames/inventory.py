@@ -197,6 +197,7 @@ class App(customtkinter.CTkFrame):
 
     def refresh(self):
         self.menu_frame_button_1.configure(state="disabled")
+        self.menu_frame_button_4.configure(state='normal' if os.path.exists('data/temp/inventory.json') else 'disabled')
         if self.scrollable_radiobutton_frame != None : self.scrollable_radiobutton_frame.destroy()
         if self.mod_item_frame != None: self.mod_item_frame.destroy()
         if self.mod_frame != None: self.mod_frame.destroy()

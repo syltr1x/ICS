@@ -2,7 +2,6 @@ import logic
 from PIL import Image
 import customtkinter
 import json
-import time
 import os
 
 class AddProductFrame(customtkinter.CTkFrame):
@@ -169,10 +168,10 @@ class ModFrame(customtkinter.CTkFrame):
         self.year_entry = customtkinter.CTkEntry(self, placeholder_text=data["year"])
         self.year_entry.grid(row=5, column=0, padx=30, pady=(15, 5))
 
-        self.car_button = customtkinter.CTkButton(self, text="Modificar Vehiculo", command=lambda:(mod_car(self.lcplate_entry.get()
-        ,self.color_entry.get(), self.make_entry.get(), self.model_entry.get(), self.type_entry.get(), self.year_entry.get())))
-
+        self.car_button = customtkinter.CTkButton(self, text="Modificar Vehiculo", command=lambda:(mod_car(self.lcplate_entry.get(),
+                self.color_entry.get(), self.make_entry.get(), self.model_entry.get(), self.type_entry.get(), self.year_entry.get())))
         self.car_button.grid(row=6, column=0, padx=30, pady=(20, 5))
+
         def mod_car(lcplate, color, make, model, tipo, year):
             cambios = []
 
@@ -243,16 +242,14 @@ class App(customtkinter.CTkFrame):
                 dark_image=Image.open(os.path.join(image_path, "light/back.png")), size=(20, 20))
         
         # create scrollable radiobutton frame
-        with open("data/car.json", "r") as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
-        if data != ['']:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
-                    item_list=[f'{json.loads(i)["lcplate"]} - {json.loads(i)["model"]}' for i in data],                                                                       
-                    label_text="Lista de Autos", corner_radius=10)
-        else:
-            self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
-                item_list=[], label_text="Lista de Autos", corner_radius=10)
-        self.scrollable_radiobutton_frame.grid(row=0, column=1, padx=(15, 5), pady=10, sticky="ns")
+        with open("data/car.json", "r") as dF: data = dF.read(); dF.close(); datab = data[:-1][1:].replace("},","}},").split("},")
+        if datab != [''] and type(datab) == list and datab != ['\n']: 
+            item = [f'{json.loads(i)["lcplate"]} - {json.loads(i)["model"]}' for i in data]
+        else: item = []
+        self.scrollable_radiobutton_frame = ScrollableRadiobuttonFrame(master=self, width=500, command=self.radiobutton_frame_event,
+                item_list=item, label_text="Lista de Autos", corner_radius=10)
         self.scrollable_radiobutton_frame.configure(width=292)
+        self.scrollable_radiobutton_frame.grid(row=0, column=1, padx=(15, 5), pady=10, sticky="ns")
 
         # create footer-menu
         self.menu_frame = customtkinter.CTkFrame(self, corner_radius=10)
@@ -318,6 +315,7 @@ class App(customtkinter.CTkFrame):
 
     def refresh(self):
         self.menu_frame_button_1.configure(state='disabled')
+        self.menu_frame_button_4.configure(state='normal' if os.path.exists('data/temp/car.json') else 'disabled')
         if self.scrollable_radiobutton_frame != None : self.scrollable_radiobutton_frame.destroy()
         if self.mod_item_frame != None: self.mod_item_frame.destroy()
         if self.mod_frame != None: self.mod_frame.destroy()

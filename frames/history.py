@@ -138,6 +138,7 @@ class App(customtkinter.CTkFrame):
 
     def refresh(self):
         self.menu_frame_button_1.configure(state='disabled')
+        self.menu_frame_button_3.configure(state='normal' if os.path.exists('data/temp/history.json') else 'disabled')
         if self.data_frame != None: self.data_frame.destroy()
         if self.works_scrollable_frame != None:
             self.works_scrollable_frame.grid_forget()

@@ -113,8 +113,9 @@ class App(customtkinter.CTkFrame):
 
     # Scrollables Frames Function
     def refresh(self):
-        # self.menu_frame_button_1.configure(state='disabled')
-        # self.menu_frame_button_2.configure(state='disabled')
+        self.menu_frame_button_1.configure(state='disabled')
+        self.menu_frame_button_2.configure(state='disabled')
+        self.menu_frame_button_4.configure(state='normal' if os.path.exists('data/temp/work.json') else 'disabled')
         if self.add_customer_frame != None: self.cancel()
         if self.data_frame != None: self.data_frame.destroy()
         if self.works_scrollable_frame != None:

@@ -42,7 +42,7 @@ class SelectAccountTypeFrame(customtkinter.CTkFrame):
 class AccountsListFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master,  filename, command, **kwargs):
         super().__init__(master, **kwargs)        
-        file = open(f"data/{filename}", "r").read()[:-1][1:].replace("'", '"').replace("},","}},").split("},")
+        file = open(f"data/{filename}", "r", encoding='utf-8').read()[:-1][1:].replace("'", '"').replace("},","}},").split("},")
 
         self.command = command
         self.button_variable = customtkinter.StringVar()
@@ -342,7 +342,6 @@ class App(customtkinter.CTkFrame):
                 dark_image=Image.open(os.path.join(image_path, "light/car.png")), size=(20, 20))
         
         # create scrollable radiobutton frame
-        with open("data/customer.json", "r") as dF: data = dF.read(); dF.close(); data = data[:-1][1:].replace("},","}},").split("},")
         self.scrollable_radiobutton_frame = SelectAccountTypeFrame(master=self, width=300, command=self.select_account_type,
                 item_list=["Particulares", "Corrientes"], corner_radius=10)
         self.scrollable_radiobutton_frame.grid(row=0, column=0, padx=(20, 20), pady=10, sticky="ns")
@@ -372,7 +371,7 @@ class App(customtkinter.CTkFrame):
                 if Nid == Lid: id = i
 
         else: id = logic.get_account("name", data, "strict")[0]["id"]
-        open(f"data/temp/{self.fileT}", "w").write(open(f"data/{self.fileT}", "r").read()) # Temp Save
+        open(f"data/temp/{self.fileT}", "w", encoding='utf-8').write(open(f"data/{self.fileT}", "r", encoding='utf-8').read()) # Temp Save
         logic.remove_data(self.fileT, id, "id")
         self.refresh(self.fileT)
         self.account_frame.destroy()
@@ -485,6 +484,7 @@ class App(customtkinter.CTkFrame):
         if self.mod_customer_frame != None: self.mod_customer_frame.destroy()
         if self.account_frame != None: self.account_frame.destroy()
         if self.account_list_frame != None: self.account_list_frame.destroy()
+        self.menu_frame_button_4.configure(state='normal' if os.path.exists(f'data/temp/{file}') else 'disabled')
         self.menu_frame_button_1.configure(state='disabled')
         self.menu_frame_button_3.configure(state='disabled')
         self.menu_frame_button_5.configure(state='disabled')
@@ -492,9 +492,9 @@ class App(customtkinter.CTkFrame):
         self.account_list_frame.grid(row=0, column=1, padx=(20, 20), pady=10, sticky="ns")
     
     def back(self, file):
-        old_data = open('data/temp/account.json', 'r', encoding='utf-8').read()
-        open('data/account.json', 'w', encoding='utf-8').write(old_data)
-        os.remove(f'data/temp/account.json')
+        old_data = open(f'data/temp/{file}', 'r', encoding='utf-8').read()
+        open(f'data/{file}', 'w', encoding='utf-8').write(old_data)
+        os.remove(f'data/temp/{file}')
         self.refresh()
 
     # buttons frames actions

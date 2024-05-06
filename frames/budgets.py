@@ -17,7 +17,7 @@ class AddCustomerFrame(customtkinter.CTkFrame):
         def get_data(request):
             if request == "customer":
                 clientes = []
-                with open("data/customer.json", "r") as dF: dataC = dF.read(); dF.close()
+                with open("data/customer.json", "r", encoding='utf-8') as dF: dataC = dF.read(); dF.close()
                 dataC = dataC[:-1][1:].replace("},","}},").split("},")
                 if dataC != [] and dataC != ['']:
                     for i in dataC:
@@ -26,14 +26,14 @@ class AddCustomerFrame(customtkinter.CTkFrame):
                 return clientes
             elif request == "technician":
                 mecanicos = []
-                with open("data/config.json", "r") as dF: dataM = json.loads(dF.read()); dF.close()
+                with open("data/config.json", "r", encoding='utf-8') as dF: dataM = json.loads(dF.read()); dF.close()
                 mecanicos = [i for i in dataM["mechanics"].split('|')]
                 return mecanicos
             elif request == "concept":
                 return ["Reparacion", "Service", "Mantenimiento", "Revision", "Garantia"]
             elif request == "placas":
                 patentes = []
-                with open("data/car.json", "r") as dF: dataP = dF.read(); dF.close()
+                with open("data/car.json", "r", encoding='utf-8') as dF: dataP = dF.read(); dF.close()
                 dataP = dataP[:-1][1:].replace("},","}},").split("},")
                 if dataP != [] and dataP != ['']:
                     for i in dataP:
@@ -307,7 +307,7 @@ class App(customtkinter.CTkFrame):
         else:
             if Nid == Lid and Nid == Eid: id = n
 
-        open("data/temp/budget.json", "w").write(open("data/budget.json" ,"r").read())
+        open("data/temp/budget.json", "w", encoding='utf-8').write(open("data/budget.json" ,"r", encoding='utf-8').read())
         datos = logic.get_budget("id", id, "strict")[0]
         datos["exitdt"] = "--/--/----"
         datos["payed"] = '0'
@@ -364,6 +364,7 @@ class App(customtkinter.CTkFrame):
     def refresh(self):
         self.menu_frame_button_1.configure(state='disabled')
         self.menu_frame_button_3.configure(state='disabled')
+        self.menu_frame_button_5.configure(state='normal' if os.path.exists('data/temp/budget.json') else 'disabled')
         if self.add_customer_frame != None: self.cancel()
         if self.data_frame != None: self.data_frame.destroy()
         if self.works_scrollable_frame != None:

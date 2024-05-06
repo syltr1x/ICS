@@ -193,10 +193,11 @@ class App(customtkinter.CTkFrame):
         self.add_customer_frame.grid(row=0, column=2, padx=(5, 15), pady=10, sticky="nsew")
 
     def refresh(self):
+        self.menu_frame_button_1.configure(state='disabled')
+        self.menu_frame_button_4.configure(state='normal' if os.path.exists('data/temp/balance.json') else 'disabled')
         if self.scrollable_radiobutton_frame != None : self.scrollable_radiobutton_frame.destroy()
         if self.account_list_frame != None: self.account_list_frame.destroy()
         if self.add_customer_frame != None: self.add_account_frame.destroy()
-        self.menu_frame_button_1.configure(state='disabled')
         with open("data/balance.json", "r", encoding='utf-8') as dF: data = dF.read()
         dF.close()
         data = data[:-1][1:].replace(',{', ',{{').split(',{')if len(data) > 5 else []

@@ -14,11 +14,11 @@ class App(customtkinter.CTkFrame):
         self.theme_mode_menu = customtkinter.CTkOptionMenu(self, values=["Rojo", "Azul", "Verde", "Morado", "Amarillo"])
         self.technicians_label = customtkinter.CTkLabel(self, text="Mecanicos (separados por '|')")
         self.technicians_entry = customtkinter.CTkEntry(self, textvariable=default_value, width=170)
-        self.confirm_btn = customtkinter.CTkButton(self, text="Confirmar", command=lambda:(logic.mod_config([
-            {"field":"mode", "value":self.appearance_mode_menu.get()}, 
-            {"field":"theme", "value":self.theme_mode_menu.get()}, 
-            {"field":"mechanics", "value":self.technicians_entry.get()}, 
-        ])))
+        self.confirm_btn = customtkinter.CTkButton(self, text="Confirmar", command=lambda:(
+            self.mod_config(self.appearance_mode_menu.get(),
+                            self.theme_mode_menu.get(),
+                            self.technicians_entry.get())
+        ))
         self.cancel_btn = customtkinter.CTkButton(self, text="Cancelar", command=lambda:(self.grid_forget()))
 
         self.appearance_mode_label.grid(row=0, column=0, padx=5, pady=5)
@@ -29,3 +29,13 @@ class App(customtkinter.CTkFrame):
         self.technicians_entry.grid(row=2, column=1, padx=5, pady=5)
         self.confirm_btn.grid(row=3, column=0, padx=5, pady=5)
         self.cancel_btn.grid(row=3, column=1, padx=5, pady=5)
+
+    def mod_config(self, mode, theme, techs):
+        modes = {"oscuro":"dark", "sistema":"system", "claro":"light"}
+        customtkinter.set_appearance_mode(modes[mode.lower()]),
+        logic.mod_config([
+            {"field":"mode", "value":mode}, 
+            {"field":"theme", "value":theme}, 
+            {"field":"mechanics", "value":techs}, 
+        ])
+        self.grid_forget()

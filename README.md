@@ -18,7 +18,7 @@ Base = write_¿?(dato, write)
 
 Cuentas (Corrientes) > 
 ```
-write_account('{"id":"0", "name":"root", "tel":"3482?", "balance":"0"}', '')
+write_account('{"id":"0", "name":"root", "balance":"", "contact":[], "cars":[]}', '')
 ```
 Cuentas (Particulares) > 
 ```

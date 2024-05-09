@@ -18,11 +18,11 @@ Base = write_¿?(dato, write)
 
 Cuentas (Corrientes) > 
 ```
-write_account('{"id":"0", "name":"root", "balance":"", "contact":[], "cars":[]}', '')
+write_account('{"id":"0", "name":"root", "balance":"", "contact":[{"media":"instagram","value":"admin_0"}], "cars":["AAA000"]}', '')
 ```
 Cuentas (Particulares) > 
 ```
-write_customer('{"id":"0", "name":"admin", "tel":"3482?", "lcplate":"'+["ABC123"]+'"}', '')
+write_customer('{"id":"0", "name":"admin", "lastname":"instrator", "birthday":"--/--/----", "contact":[{"media":"instagram","value":"admin_0"}], "cars":["AAA000"]}', '')
 ```
 Trabajos > 
 ```

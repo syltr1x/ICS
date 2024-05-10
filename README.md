@@ -24,9 +24,13 @@ Cuentas (Particulares) >
 ```
 write_customer('{"id":"0", "name":"admin", "lastname":"instrator", "birthday":"--/--/----", "contact":[{"media":"instagram","value":"admin_0"}], "cars":["AAA000"]}', '')
 ```
+Presupuestos > 
+```
+write_budget('{"id":"0", "customer":"nombre apellido", "lcplate":"patente", "technician":"mecanico", "entrydt":"entrada", "diagnostic":"service", "work":[], "price":"120", "pd":"pago"}', '')
+```
 Trabajos > 
 ```
-write_works('{"id":"0", "customer":"nombre apellido", "lcplate":"patente", "entrydt":"entrada", "diagnostic":"service", "exitdt":"salida", "price":"precio", "status":"pago"}', '')
+write_works('{"id":"0", "customer":"nombre apellido", "lcplate":"patente", "technician":"mecanico", "entrydt":"entrada", "diagnostic":"service", "exitdt":"--/--/----", "work":[], "price":"120", "pd":"pago", "status":""}', '')
 ```
 Autos > 
 ```

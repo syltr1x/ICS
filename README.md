@@ -34,7 +34,7 @@ write_works('{"id":"0", "customer":"nombre apellido", "lcplate":"patente", "tech
 ```
 Autos > 
 ```
-write_cars('{"lcplate":"patente", "color":"rojo", "make":"chevrolet", "model":"astra", "year":"2001"}')
+write_cars('{"lcplate":"patente", "color":"rojo", "make":"chevrolet", "model":"astra", "type":"tipo" "year":"2001"}')
 ```
 Producto > 
 ```

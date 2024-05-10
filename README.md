@@ -34,11 +34,15 @@ write_works('{"id":"0", "customer":"nombre apellido", "lcplate":"patente", "tech
 ```
 Autos > 
 ```
-write_cars('{"lcplate":"patente", "color":"rojo", "make":"chevrolet", "model":"astra", "type":"tipo" "year":"2001"}')
+write_cars('{"lcplate":"patente", "color":"rojo", "make":"chevrolet", "model":"astra", "type":"tipo" "year":"2001"}', '') 
 ```
 Producto > 
 ```
-write_product('{"name":"inyector", "price":"8000", "stock":"20"}')
+write_product('{"name":"inyector", "price":"8000", "stock":"20"}', '')
+```
+Balance > 
+```
+write_balance('', '')
 ```
 ### Parametros:
 ```

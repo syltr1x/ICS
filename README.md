@@ -42,7 +42,7 @@ write_product('{"name":"inyector", "price":"8000", "stock":"20"}', '')
 ```
 Balance > 
 ```
-write_balance('', '')
+write_balance('"date":"--/--/----", "balance":"0", "movements":[{"id":"0", "client":"Nombre", "mecanico":"Mecanico", "price":"precio", "desc":"information"}]', '')
 ```
 ### Parametros:
 ```
